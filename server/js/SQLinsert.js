@@ -1,31 +1,36 @@
-import { client } from "./index.js";
+import { SQLclient } from "./SQLclient.js";
 
-async function insertSQL() {
+async function SQLinsert() {
     try {
-        await client.connect();
+        await SQLclient.connect();
         console.log("Connected successfully");
 
-        await client.query("BEGIN;");
+        await SQLclient.query("BEGIN;");
         console.log("BEGIN initiates a transactin block");
 
         // Query for MAX number of name_id to get new ID
-        const results = await client.query("SELECT MAX(name_id) FROM names;");
+        const results = await SQLclient.query("SELECT MAX(name_id) FROM names;");
         const newID = results.rows[0].max + 1;
 
-        await client.query("INSERT INTO names VALUES ($1, $2);", [newID, "Stipe"]);
+        await SQLclient.query("INSERT INTO names VALUES ($1, $2);", [
+            newID,
+            "Stipe",
+        ]);
         console.log("Inserted new row");
 
-        await client.query("COMMIT;");
+        await SQLclient.query("COMMIT;");
         console.log("COMMIT terminates transaction block");
     } catch (ex) {
         console.log(`Something happend ${ex}`);
 
-        await client.query("ROLLBACK;");
+        await SQLclient.query("ROLLBACK;");
         console.log("ROLLBACK terminates transaction block");
     } finally {
-        await client.end();
+        await SQLclient.end();
         console.log("Disconnected successfully");
     }
 }
 
-export { insertSQL };
+SQLinsert();
+
+export { SQLinsert };
