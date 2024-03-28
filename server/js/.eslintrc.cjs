@@ -9,4 +9,7 @@ module.exports = {
         ecmaVersion: "latest",
         sourceType: "module",
     },
+    rules: {
+        indent: ["off", 4],
+    },
 };
