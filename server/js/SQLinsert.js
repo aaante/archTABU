@@ -26,7 +26,9 @@ async function SQLinsert(name, experience, salary) {
             [experience_id, experience],
         );
         experience_id = returned_experience_id.rows[0].experience_id;
-        console.log(`experience_id: ${experience_id} experience: ${experience}`);
+        console.log(
+            `experience_id: ${experience_id} experience: ${experience}`,
+        );
 
         // Insert salary into salaries table
         let salary_id = await IDgenerator("salary_id", "salaries");
