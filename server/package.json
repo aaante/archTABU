@@ -1,19 +1,19 @@
 {
-  "name": "archtabu",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "test": "node ./js/index.js"
-  },
-  "author": "ante",
-  "license": "ISC",
-  "dependencies": {
-    "pg": "^8.11.3"
-  },
-  "devDependencies": {
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0"
-  }
+    "name": "archtabu",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "test": "node ./js/index.js"
+    },
+    "author": "ante",
+    "license": "ISC",
+    "dependencies": {
+        "pg": "^8.11.3"
+    },
+    "devDependencies": {
+        "eslint": "^8.57.0",
+        "eslint-config-prettier": "^9.1.0"
+    }
 }
