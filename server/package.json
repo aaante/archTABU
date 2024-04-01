@@ -2,10 +2,10 @@
     "name": "archtabu",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "",
     "type": "module",
     "scripts": {
-        "test": "node ./js/index.js"
+        "test": ""
     },
     "author": "ante",
     "license": "ISC",
