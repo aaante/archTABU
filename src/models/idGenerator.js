@@ -1,4 +1,4 @@
-import { SQLclient } from "./SQLclient.js";
+import { SQLclient } from "../configs/SQLclient.js";
 
 /* Query for MAX id number to get id number + 1 */
 /* Should be called inside transaction block */

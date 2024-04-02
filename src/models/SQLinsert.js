@@ -1,4 +1,4 @@
-import { SQLclient } from "./SQLclient.js";
+import { SQLclient } from "../configs/SQLclient.js";
 import { idGenerator } from "./idGenerator.js";
 
 async function SQLinsert(name, experience, salary) {
@@ -96,7 +96,5 @@ async function SQLinsert(name, experience, salary) {
         console.log("Disconnected successfully");
     }
 }
-
-SQLinsert("Marko", 5, 7000);
 
 export { SQLinsert };
