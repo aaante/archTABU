@@ -24,7 +24,7 @@ app.get("/avg", async (req, res) => {
     } catch (error) {
         console.error(error);
     } finally {
-        res.send(avg);
+        res.send(`Average salary: ${avg}`);
     }
 });
 

@@ -1,17 +1,14 @@
-import { SQLclient } from "../configs/SQLclient.js";
+import { SQLpool } from "../configs/SQLpool.js";
 import { idGenerator } from "./idGenerator.js";
 
 async function SQLinsert(name, experience, salary) {
     try {
-        await SQLclient.connect();
-        console.log("Connected successfully");
-
-        await SQLclient.query("BEGIN;");
+        await SQLpool.query("BEGIN;");
         console.log("BEGIN initiates a transaction block");
 
         // Insert name into names table
         let nameID = await idGenerator("name_id", "names");
-        const returnedNameID = await SQLclient.query(
+        const returnedNameID = await SQLpool.query(
             /* Tries INSERT: returns id ON CONFLICT */
             /* (https://stackoverflow.com/a/62205017/21913412) */
             "WITH row AS (" +
@@ -32,7 +29,7 @@ async function SQLinsert(name, experience, salary) {
 
         // Insert experience into experience table
         let experienceID = await idGenerator("experience_id", "experience");
-        const returnedExperienceID = await SQLclient.query(
+        const returnedExperienceID = await SQLpool.query(
             /* Tries INSERT: returns id ON CONFLICT */
             /* (https://stackoverflow.com/a/62205017/21913412) */
             "WITH row AS (" +
@@ -53,7 +50,7 @@ async function SQLinsert(name, experience, salary) {
 
         // Insert salary into salaries table
         let salaryID = await idGenerator("salary_id", "salaries");
-        const returnedSalaryID = await SQLclient.query(
+        const returnedSalaryID = await SQLpool.query(
             /* Tries INSERT: returns id ON CONFLICT */
             /* (https://stackoverflow.com/a/62205017/21913412) */
             "WITH row AS (" +
@@ -74,7 +71,7 @@ async function SQLinsert(name, experience, salary) {
 
         // Insert name_id, experience_id, salary_id into people table
         const personID = await idGenerator("person_id", "people");
-        await SQLclient.query(
+        await SQLpool.query(
             "INSERT INTO people " + "VALUES ($1, $2, $3, $4);",
             [personID, nameID, experienceID, salaryID],
         );
@@ -84,16 +81,15 @@ async function SQLinsert(name, experience, salary) {
             `salary_id ${salaryID} in table people`,
         );
 
-        await SQLclient.query("COMMIT;");
+        await SQLpool.query("COMMIT;");
         console.log("COMMIT terminates transaction block");
     } catch (ex) {
         console.log(`Something happend ${ex}`);
 
-        await SQLclient.query("ROLLBACK;");
+        await SQLpool.query("ROLLBACK;");
         console.log("ROLLBACK terminates transaction block");
     } finally {
-        await SQLclient.end();
-        console.log("Disconnected successfully");
+        console.log("Waiting for transaction...");
     }
 }
 

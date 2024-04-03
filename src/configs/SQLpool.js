@@ -1,12 +1,15 @@
 import pkg from "pg";
-const { Client } = pkg;
+const { Pool } = pkg;
 
-const SQLclient = new Client({
+const SQLpool = new Pool({
     user: "antesusic",
     password: "postgres",
     host: "127.0.0.1",
     port: 5432,
     database: "archtabu",
+    max: 3,
+    connectionTimeoutMillis: 0,
+    idleTimeoutMillis: 0,
 });
 
-export { SQLclient };
+export { SQLpool };
