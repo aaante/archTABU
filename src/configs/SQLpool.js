@@ -7,7 +7,7 @@ const SQLpool = new Pool({
     host: "127.0.0.1",
     port: 5432,
     database: "archtabu",
-    max: 3,
+    max: 10,
     connectionTimeoutMillis: 0,
     idleTimeoutMillis: 0,
 });

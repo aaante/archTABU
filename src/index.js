@@ -6,25 +6,24 @@ const port = 3000;
 import { SQLinsert } from "./models/SQLinsert.js";
 import { SQLselect } from "./models/SQLselect.js";
 
-// Modify to `.post`
-app.get("/insert", async (req, res) => {
+app.post("/", async (req, res) => {
     try {
         await SQLinsert("Josip", 3, 10000);
     } catch (error) {
         console.error(error);
     } finally {
-        res.send("Architect inserted into database!");
+        res.send(`<h1>Architect inserted into database!</h1>`);
     }
 });
 
-app.get("/avg", async (req, res) => {
+app.get("/", async (req, res) => {
     let avg;
     try {
         avg = await SQLselect();
     } catch (error) {
         console.error(error);
     } finally {
-        res.send(`Average salary: ${avg}`);
+        res.send(`<h1>Average salary: ${avg}</h1>`);
     }
 });
 
