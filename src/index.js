@@ -10,35 +10,31 @@ import { SQLselect } from "./models/SQLselect.js";
 
 app.use(express.static(__dirname + "/static"));
 
-app.get("/", (req, res) => {
+app.get("/index", (req, res) => {
     res.sendFile(__dirname + "/public/index.html");
 });
 
-app.get("/:avg", async (req, res) => {
-    console.log(req.params);
-    if (req.params.avg === "avg") {
-        let avg;
-        try {
-            avg = await SQLselect();
-        } catch (error) {
-            console.error(error);
-        } finally {
-            res.send(`<h1>Average salary: ${avg}</h1>`);
-        }
-    } else {
-        res.send(`<h1>No salaries</h1>`);
+app.get("/", async (req, res) => {
+    let avg;
+    try {
+        avg = await SQLselect();
+    } catch (error) {
+        console.error(error);
+    } finally {
+        res.send(`Average salary: ${avg}`);
     }
 });
 
-// app.post("/", async (req, res) => {
-//     try {
-//         await SQLinsert("Ante", 8, 12000);
-//     } catch (error) {
-//         console.error(error);
-//     } finally {
-//         res.send(`<h1>Architect inserted into database!</h1>`);
-//     }
-// });
+app.post("/", async (req, res) => {
+    console.log(req.params);
+    try {
+        await SQLinsert("Ante", 8, 12000);
+    } catch (error) {
+        console.error(error);
+    } finally {
+        res.send(`Architect inserted into database!`);
+    }
+});
 
 app.listen(port, () => {
     console.log(`App listening on: http://localhost:${port}`);
