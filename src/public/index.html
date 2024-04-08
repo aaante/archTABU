@@ -8,35 +8,33 @@
     <body>
         <h1>archTABU 🏛️</h1>
 
-        <h3>No Form</h3>
-        <input type="text" name="name" value="" placeholder="name" />
-        <br />
-        <input
-            type="number"
-            name="experience"
-            value=""
-            placeholder="experience"
-        />
-        <br />
-        <input type="number" name="salary" value="" placeholder="salary" />
-        <br />
-        <button id="POST">POST your data</button>
-        <br />
-
         <h3>Form</h3>
-        <form method="POST">
-            <input type="text" name="name" value="" placeholder="name" />
+        <form id="form" method="POST">
+            <input
+                id="name"
+                type="text"
+                name="name"
+                value=""
+                placeholder="name"
+            />
             <br />
             <input
+                id="experience"
                 type="number"
                 name="experience"
                 value=""
                 placeholder="experience"
             />
             <br />
-            <input type="number" name="salary" value="" placeholder="salary" />
+            <input
+                id="salary"
+                type="number"
+                name="salary"
+                value=""
+                placeholder="salary"
+            />
             <br />
-            <input type="submit" value="POST your data">
+            <input id="submit" type="submit" value="POST your data" />
             <br />
         </form>
 

@@ -1,5 +1,5 @@
 const buttonGET = document.getElementById("GET");
-const buttonPOST = document.getElementById("POST");
+const form = document.getElementById("form");
 
 buttonGET.addEventListener("click", () => {
     console.log("GET button clicked");
@@ -13,15 +13,22 @@ buttonGET.addEventListener("click", () => {
     http.send();
 });
 
-// For 'No Form'
-buttonPOST.addEventListener("click", () => {
-    console.log("POST button clicked");
+// Get form values
+function handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const formProps = Object.fromEntries(formData);
+    console.log(formProps);
+    return formProps;
+}
+
+form.addEventListener("submit", (event) => {
     const http = new XMLHttpRequest();
-    http.open("POST", "http://localhost:3000/")
+    http.open("POST", "http://localhost:3000/");
     http.onreadystatechange = () => {
         if (http.readyState === 4) {
             alert(http.responseText);
         }
     };
-    http.send();
+    http.send(handleSubmit(event));
 });
