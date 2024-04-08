@@ -9,6 +9,7 @@ import { SQLinsert } from "./models/SQLinsert.js";
 import { SQLselect } from "./models/SQLselect.js";
 
 app.use(express.static(__dirname + "/static"));
+app.use(express.json());
 
 app.get("/index", (req, res) => {
     res.sendFile(__dirname + "/public/index.html");
@@ -26,9 +27,12 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/", async (req, res) => {
-    console.log(req.params);
     try {
-        await SQLinsert("Ante", 8, 12000);
+        await SQLinsert(
+            req.body.name,
+            parseInt(req.body.experience),
+            parseInt(req.body.salary),
+        );
     } catch (error) {
         console.error(error);
     } finally {

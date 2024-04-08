@@ -1,19 +1,6 @@
 const buttonGET = document.getElementById("GET");
 const form = document.getElementById("form");
 
-// Get average salary using AJAX
-// buttonGET.addEventListener("click", () => {
-//     console.log("GET button clicked");
-//     const http = new XMLHttpRequest();
-//     http.open("GET", "http://localhost:3000/");
-//     http.onreadystatechange = () => {
-//         if (http.readyState === 4) {
-//             alert(http.responseText);
-//         }
-//     };
-//     http.send();
-// });
-
 // GET average salary using Fetch
 buttonGET.addEventListener("click", async () => {
     try {
@@ -26,26 +13,27 @@ buttonGET.addEventListener("click", async () => {
     }
 });
 
-// Get form values
+// POST data
+// Get form values into object
 function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const formProps = Object.fromEntries(formData);
-    console.log(formProps);
     return formProps;
 }
 
-// POST data
-// Add event listener on submit button
-// ...
-form.addEventListener("submit", (event) => {
-    const http = new XMLHttpRequest();
-    http.open("POST", "http://localhost:3000/");
-    http.onreadystatechange = () => {
-        if (http.readyState === 4) {
-            // alert(http.responseText);
-            alert();
-        }
-    };
-    http.send(handleSubmit(event));
+// Send object to route 
+form.addEventListener("submit", async (event) => {
+    try {
+        const h2newInsert = document.getElementById("new-insert");
+        const jsonRequest = handleSubmit(event);
+        const result = await fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(jsonRequest),
+        });
+        h2newInsert.innerHTML = await result.text();
+    } catch (error) {
+        console.log("Error posting data");
+    }
 });
