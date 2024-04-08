@@ -27,7 +27,6 @@ app.get("/", async (req, res) => {
 
 app.post("/", async (req, res) => {
     console.log(req.params);
-    console.log(req);
     try {
         await SQLinsert("Ante", 8, 12000);
     } catch (error) {
