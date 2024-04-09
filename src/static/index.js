@@ -1,7 +1,7 @@
 const buttonGET = document.getElementById("GET");
 const form = document.getElementById("form");
 
-// GET average salary using Fetch
+/* GET average salary using Fetch */
 buttonGET.addEventListener("click", async () => {
     try {
         const h2avgSalary = document.getElementById("avg-salary");
@@ -13,7 +13,7 @@ buttonGET.addEventListener("click", async () => {
     }
 });
 
-// POST data
+/* POST data */
 // Get form values into object
 function handleSubmit(event) {
     event.preventDefault();
@@ -37,3 +37,6 @@ form.addEventListener("submit", async (event) => {
         console.log("Error posting data");
     }
 });
+
+/* DELETE data */
+// ...

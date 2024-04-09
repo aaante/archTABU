@@ -33,7 +33,7 @@
                 placeholder="salary"
             />
             <br />
-            <input id="submit" type="submit" value="POST data" />
+            <input type="submit" value="POST data" />
             <h2 id="new-insert"></h2>
         </form>
 
@@ -41,6 +41,11 @@
         <br />
         <button id="GET">GET average salary</button>
         <h2 id="avg-salary"></h2>
+
+        <form id="delete" method="POST">
+            <input id="id" type="number" name="id" value="" placeholder="id" />
+            <input type="submit" value="DELETE data" />
+        </form>
 
         <!-- src is realtive to express.static dir -->
         <script type="module" src="index.js"></script>
