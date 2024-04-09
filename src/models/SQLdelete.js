@@ -6,7 +6,7 @@ async function SQLdelete(person_id) {
         await SQLpool.query("BEGIN;");
         console.log("BEGIN initiates a transaction block");
 
-        /* Return name_id */
+        /* Get name_id */
         let nameID = await SQLpool.query(
             "WITH names_row AS (" +
                 "SELECT name_id FROM names " +
@@ -21,7 +21,7 @@ async function SQLdelete(person_id) {
         nameID = nameID.rows[0].name_id;
         console.log(`nameID: ${nameID}`);
 
-        /* Return experience_id */
+        /* Get experience_id */
         let experienceID = await SQLpool.query(
             "WITH experience_row AS (" +
                 "SELECT experience_id FROM experience " +
@@ -36,7 +36,7 @@ async function SQLdelete(person_id) {
         experienceID = experienceID.rows[0].experience_id;
         console.log(`experienceID: ${experienceID}`);
 
-        /* Return salary_id */
+        /* Get salary_id */
         let salaryID = await SQLpool.query(
             "WITH salaries_row AS (" +
                 "SELECT salary_id FROM salaries " +
@@ -51,8 +51,7 @@ async function SQLdelete(person_id) {
         salaryID = salaryID.rows[0].salary_id;
         console.log(`salaryID: ${salaryID}`);
 
-        /* Delete row from names only if name_id is unique 
-        (name_id count === 1) in people */
+        /* Get count of name_id in people */
         let nameIDcount = await SQLpool.query(
             "SELECT COUNT(name_id) " + "FROM people " + "WHERE name_id = $1;",
             [nameID],
@@ -60,20 +59,7 @@ async function SQLdelete(person_id) {
         nameIDcount = parseInt(nameIDcount.rows[0].count);
         console.log(`nameIDcount: ${nameIDcount}`);
 
-        if (nameIDcount === 1) {
-            let deletedNameID = await SQLpool.query(
-                "DELETE FROM names " +
-                    "WHERE name_id = $1 " +
-                    "RETURNING name_id;",
-                [nameID],
-            );
-            console.log(deletedNameID);
-            // deletedNameID = deletedNameID.rows[0].name_id;
-            // console.log(`deletedNameID: ${deletedNameID}`);
-        }
-
-        /* Delete row from experience only if experience_id is unique
-        in people */
+        /* Get count of experience_id in people */
         let experienceIDcount = await SQLpool.query(
             "SELECT COUNT(experience_id) " +
                 "FROM people " +
@@ -83,6 +69,43 @@ async function SQLdelete(person_id) {
         experienceIDcount = parseInt(experienceIDcount.rows[0].count);
         console.log(`experienceIDcount: ${experienceIDcount}`);
 
+        /* Get count of salary_id in people */
+        let salaryIDcount = await SQLpool.query(
+            "SELECT COUNT(salary_id) " +
+                "FROM people " +
+                "WHERE salary_id = $1;",
+            [salaryID],
+        );
+        salaryIDcount = parseInt(salaryIDcount.rows[0].count);
+        console.log(`salayrIDcount: ${salaryIDcount}`);
+
+        /* Delete from people */
+        let deletedPersonID = await SQLpool.query(
+            "DELETE FROM people " +
+                "WHERE person_id = $1 " +
+                "RETURNING person_id;",
+            [person_id],
+        );
+        deletedPersonID = deletedPersonID.rows[0].person_id;
+        console.log(`deletedPersonID: ${deletedPersonID}`);
+
+        /* Delete row from names only if name_id is unique 
+        (name_id count === 1) in people */
+        if (nameIDcount === 1) {
+            let deletedNameID = await SQLpool.query(
+                "DELETE FROM names " +
+                    "WHERE name_id = $1 " +
+                    "RETURNING name_id;",
+                [nameID],
+            );
+            deletedNameID = deletedNameID.rows[0].name_id;
+            console.log(`deletedNameID: ${deletedNameID}`);
+        } else {
+            console.log("Row in names not deleted (name_id is not unique)");
+        }
+
+        /* Delete row from experience only if experience_id is unique
+        (experience_id count === 1) in people */
         if (experienceIDcount === 1) {
             let deletedExperienceID = await SQLpool.query(
                 "DELETE FROM experience " +
@@ -90,14 +113,30 @@ async function SQLdelete(person_id) {
                     "RETURNING experience_id;",
                 [experienceID],
             );
-            console.log(deletedExperienceID);
-            // deletedExperienceID = deletedExperienceID.rows[0].experience_id;
-            // console.log(`deletedExperienceID: ${deletedExperienceID}`);
+            deletedExperienceID = deletedExperienceID.rows[0].experience_id;
+            console.log(`deletedExperienceID: ${deletedExperienceID}`);
+        } else {
+            console.log(
+                "Row in experience not deleted (experience_id is not unique)",
+            );
         }
 
-        /* Delete row from salaries only if salary_id is unique in people */
-
-        /* If all ids are not unique, delete from people table (only) */
+        /* Delete row from salaries only if salary_id is unique
+        (salary_id count === 1) in people */
+        if (salaryIDcount === 1) {
+            let deletedSalaryID = await SQLpool.query(
+                "DELETE FROM salaries " +
+                    "WHERE salary_id = $1 " +
+                    "RETURNING salary_id;",
+                [salaryID],
+            );
+            deletedSalaryID = deletedSalaryID.rows[0].salary_id;
+            console.log(`deletedSalaryID: ${deletedSalaryID}`);
+        } else {
+            console.log(
+                "Row in salaries not deleted (salary_id is not unique)",
+            );
+        }
 
         await SQLpool.query("COMMIT;");
         console.log("COMMIT terminates transaction block");
