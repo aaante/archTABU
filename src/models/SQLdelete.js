@@ -67,7 +67,9 @@ async function SQLdelete(person_id) {
                     "RETURNING name_id;",
                 [nameID],
             );
-            console.log(`deletedNameID: ${deletedNameID}`);
+            console.log(deletedNameID);
+            // deletedNameID = deletedNameID.rows[0].name_id;
+            // console.log(`deletedNameID: ${deletedNameID}`);
         }
 
         /* Delete row from experience only if experience_id is unique
@@ -88,7 +90,9 @@ async function SQLdelete(person_id) {
                     "RETURNING experience_id;",
                 [experienceID],
             );
-            console.log(`deletedExperienceID: ${deletedExperienceID}`);
+            console.log(deletedExperienceID);
+            // deletedExperienceID = deletedExperienceID.rows[0].experience_id;
+            // console.log(`deletedExperienceID: ${deletedExperienceID}`);
         }
 
         /* Delete row from salaries only if salary_id is unique in people */
@@ -107,6 +111,6 @@ async function SQLdelete(person_id) {
     }
 }
 
-SQLdelete(2);
+SQLdelete(1);
 
 export { SQLdelete };
