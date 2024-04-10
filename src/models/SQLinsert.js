@@ -84,7 +84,7 @@ async function SQLinsert(name, experience, salary) {
         await SQLpool.query("COMMIT;");
         console.log("COMMIT terminates transaction block");
     } catch (ex) {
-        console.log(`Something happend ${ex}`);
+        console.log(`Something happened ${ex}`);
 
         await SQLpool.query("ROLLBACK;");
         console.log("ROLLBACK terminates transaction block");

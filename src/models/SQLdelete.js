@@ -1,4 +1,5 @@
 import { SQLpool } from "../configs/SQLpool.js";
+import { getAllColumns } from "./getAllColumns.js";
 
 async function SQLdelete(person_id) {
     console.log(`Deleting person_id: ${person_id}`);
@@ -6,49 +7,14 @@ async function SQLdelete(person_id) {
         await SQLpool.query("BEGIN;");
         console.log("BEGIN initiates a transaction block");
 
-        /* Get name_id */
-        let nameID = await SQLpool.query(
-            "WITH names_row AS (" +
-                "SELECT name_id FROM names " +
-                "WHERE name_id = (" +
-                "SELECT name_id FROM people " +
-                "WHERE person_id = $1 " +
-                ") " +
-                ") " +
-                "SELECT name_id FROM names_row;",
-            [person_id],
-        );
-        nameID = nameID.rows[0].name_id;
+        /* Get all (id) columns from people */
+        const ids = await getAllColumns("people", "person_id", person_id);
+
+        const nameID = ids.name_id;
+        const experienceID = ids.experience_id;
+        const salaryID = ids.salary_id;
         console.log(`nameID: ${nameID}`);
-
-        /* Get experience_id */
-        let experienceID = await SQLpool.query(
-            "WITH experience_row AS (" +
-                "SELECT experience_id FROM experience " +
-                "WHERE experience_id = (" +
-                "SELECT experience_id FROM people " +
-                "WHERE person_id = $1 " +
-                ") " +
-                ") " +
-                "SELECT experience_id FROM experience_row;",
-            [person_id],
-        );
-        experienceID = experienceID.rows[0].experience_id;
         console.log(`experienceID: ${experienceID}`);
-
-        /* Get salary_id */
-        let salaryID = await SQLpool.query(
-            "WITH salaries_row AS (" +
-                "SELECT salary_id FROM salaries " +
-                "WHERE salary_id = (" +
-                "SELECT salary_id FROM people " +
-                "WHERE person_id = $1 " +
-                ") " +
-                ") " +
-                "SELECT salary_id FROM salaries_row;",
-            [person_id],
-        );
-        salaryID = salaryID.rows[0].salary_id;
         console.log(`salaryID: ${salaryID}`);
 
         /* Get count of name_id in people */
@@ -77,7 +43,7 @@ async function SQLdelete(person_id) {
             [salaryID],
         );
         salaryIDcount = parseInt(salaryIDcount.rows[0].count);
-        console.log(`salayrIDcount: ${salaryIDcount}`);
+        console.log(`salaryIDcount: ${salaryIDcount}`);
 
         /* Delete from people */
         let deletedPersonID = await SQLpool.query(
@@ -141,7 +107,7 @@ async function SQLdelete(person_id) {
         await SQLpool.query("COMMIT;");
         console.log("COMMIT terminates transaction block");
     } catch (ex) {
-        console.log(`Something happend ${ex}`);
+        console.log(`Something happened ${ex}`);
 
         await SQLpool.query("ROLLBACK;");
         console.log("ROLLBACK terminates transaction block");
