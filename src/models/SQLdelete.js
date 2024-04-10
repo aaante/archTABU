@@ -2,7 +2,7 @@ import { SQLpool } from "../configs/SQLpool.js";
 import { getAllColumns } from "./getAllColumns.js";
 
 async function SQLdelete(person_id) {
-    console.log(`Deleting person_id: ${person_id}`);
+    console.log(`Deleting person with person_id: ${person_id}`);
     try {
         await SQLpool.query("BEGIN;");
         console.log("BEGIN initiates a transaction block");
