@@ -2,7 +2,7 @@ import { SQLpool } from "../configs/SQLpool.js";
 import { getAllColumns } from "./getAllColumns.js";
 import { updateColumn } from "./updateColumn.js";
 
-async function SQLupdate(person_id, name) {
+async function SQLupdate(person_id, name, experience, salary) {
     console.log(`Updating person with person_id: ${person_id}`);
     try {
         await SQLpool.query("BEGIN;");
@@ -29,17 +29,27 @@ async function SQLupdate(person_id, name) {
         updatedName = updatedName.name;
         console.log(`Name updated: ${updatedName}`);
 
-        // let updatedName = await SQLpool.query(
-        //     "UPDATE names " +
-        //         "SET name = $1 " +
-        //         "WHERE name_id = $2 " +
-        //         "RETURNING name;",
-        //     [name, nameID],
-        // );
-
         /* Update experience column in experience table */
+        let updatedExperience = await updateColumn(
+            "experience",
+            "experience",
+            "experience_id",
+            experience,
+            experienceID,
+        );
+        updatedExperience = updatedExperience.experience;
+        console.log(`Experience updated: ${updatedExperience}`);
 
         /* Update salary column in salaries table */
+        let updatedSalary = await updateColumn(
+            "salaries",
+            "salary",
+            "salary_id",
+            salary,
+            salaryID,
+        );
+        updatedSalary = updatedSalary.salary;
+        console.log(`Salary updated: ${updatedSalary}`);
 
         await SQLpool.query("COMMIT;");
         console.log("COMMIT terminates transaction block");
@@ -53,6 +63,6 @@ async function SQLupdate(person_id, name) {
     }
 }
 
-SQLupdate(3, "Josip Jadran");
+SQLupdate(3, "Boris", 5, 5000);
 
 export { SQLupdate };
