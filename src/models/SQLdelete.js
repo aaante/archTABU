@@ -150,6 +150,4 @@ async function SQLdelete(person_id) {
     }
 }
 
-SQLdelete(1);
-
 export { SQLdelete };

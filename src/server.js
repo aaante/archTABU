@@ -7,6 +7,7 @@ const __dirname = import.meta.dirname;
 // Import model functions
 import { SQLinsert } from "./models/SQLinsert.js";
 import { SQLselect } from "./models/SQLselect.js";
+import { SQLdelete } from "./models/SQLdelete.js";
 
 app.use(express.static(__dirname + "/static"));
 app.use(express.json());
@@ -37,6 +38,16 @@ app.post("/", async (req, res) => {
         console.error(error);
     } finally {
         res.send(`Architect inserted into database!`);
+    }
+});
+
+app.delete("/", async (req, res) => {
+    try {
+        await SQLdelete(req.body.id);
+    } catch (error) {
+        console.error(error);
+    } finally {
+        res.send(`Architect deleted from database`);
     }
 });
 

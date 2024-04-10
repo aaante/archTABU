@@ -1,8 +1,10 @@
-const buttonGET = document.getElementById("GET");
-const form = document.getElementById("form");
+// Get html elements
+const get = document.getElementById("get");
+const post = document.getElementById("post");
+const del = document.getElementById("del");
 
-/* GET average salary using Fetch */
-buttonGET.addEventListener("click", async () => {
+/* GET average salary */
+get.addEventListener("click", async () => {
     try {
         const h2avgSalary = document.getElementById("avg-salary");
         const result = await fetch("http://localhost:3000/", { method: "GET" });
@@ -13,8 +15,7 @@ buttonGET.addEventListener("click", async () => {
     }
 });
 
-/* POST data */
-// Get form values into object
+// Function for getting form values into object
 function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -22,8 +23,8 @@ function handleSubmit(event) {
     return formProps;
 }
 
-// Send object to route 
-form.addEventListener("submit", async (event) => {
+/* POST data */
+post.addEventListener("submit", async (event) => {
     try {
         const h2newInsert = document.getElementById("new-insert");
         const jsonRequest = handleSubmit(event);
@@ -39,4 +40,17 @@ form.addEventListener("submit", async (event) => {
 });
 
 /* DELETE data */
-// ...
+del.addEventListener("submit", async (event) => {
+    try {
+        const h2newDelete = document.getElementById("new-delete");
+        const jsonRequest = handleSubmit(event);
+        const result = await fetch("http://localhost:3000/", {
+            method: "DELETE",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(jsonRequest),
+        });
+        h2newDelete.innerHTML = await result.text();
+    } catch (error) {
+        console.log("Error deleting data");
+    }
+});
