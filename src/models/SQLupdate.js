@@ -63,6 +63,4 @@ async function SQLupdate(person_id, name, experience, salary) {
     }
 }
 
-SQLupdate(3, "Boris", 5, 5000);
-
 export { SQLupdate };

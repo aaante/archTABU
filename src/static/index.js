@@ -1,19 +1,8 @@
 // Get html elements
-const get = document.getElementById("get");
 const post = document.getElementById("post");
+const get = document.getElementById("get");
+const update = document.getElementById("update");
 const del = document.getElementById("del");
-
-/* GET average salary */
-get.addEventListener("click", async () => {
-    try {
-        const h2avgSalary = document.getElementById("avg-salary");
-        const result = await fetch("http://localhost:3000/", { method: "GET" });
-        const avgSalary = await result.text();
-        h2avgSalary.innerHTML = avgSalary;
-    } catch (error) {
-        console.log("Error getting average salary");
-    }
-});
 
 // Function for getting form values into object
 function handleSubmit(event) {
@@ -36,6 +25,34 @@ post.addEventListener("submit", async (event) => {
         h2newInsert.innerHTML = await result.text();
     } catch (error) {
         console.log("Error posting data");
+    }
+});
+
+/* GET average salary */
+get.addEventListener("click", async () => {
+    try {
+        const h2avgSalary = document.getElementById("avg-salary");
+        const result = await fetch("http://localhost:3000/", { method: "GET" });
+        const avgSalary = await result.text();
+        h2avgSalary.innerHTML = avgSalary;
+    } catch (error) {
+        console.log("Error getting average salary");
+    }
+});
+
+/* UPDATE data */
+update.addEventListener("submit", async (event) => {
+    try {
+        const h2newUpdate = document.getElementById("new-update");
+        const jsonRequest = handleSubmit(event);
+        const result = await fetch("http://localhost:3000/", {
+            method: "PUT",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(jsonRequest),
+        });
+        h2newUpdate.innerHTML = await result.text();
+    } catch (error) {
+        console.log("Error updating data");
     }
 });
 
