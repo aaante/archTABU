@@ -1,5 +1,5 @@
 import { SQLpool } from "../configs/SQLpool.js";
-import { getAllColumns } from "./getAllColumns.js";
+import { getAll } from "./getAll.js";
 
 async function SQLdelete(person_id) {
     console.log(`Deleting person with person_id: ${person_id}`);
@@ -8,7 +8,7 @@ async function SQLdelete(person_id) {
         console.log("BEGIN initiates a transaction block");
 
         /* Get all (id) columns from people */
-        const ids = await getAllColumns("people", "person_id", person_id);
+        const ids = await getAll("people", "person_id", person_id);
 
         const nameID = ids.name_id;
         const experienceID = ids.experience_id;
