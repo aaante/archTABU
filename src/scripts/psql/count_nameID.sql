@@ -1,3 +1,3 @@
 SELECT COUNT(name_id)
 FROM people
-WHERE name_id = 1;
+WHERE name_id = 2;

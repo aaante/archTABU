@@ -2,6 +2,7 @@ import { SQLpool } from "../configs/SQLpool.js";
 import { getAll } from "./getAll.js";
 import { updateColumn } from "./updateColumn.js";
 import { getCount } from "./getCount.js";
+import { updateColumnV2 } from "./updateColumnV2.js";
 
 async function SQLupdate(person_id, name, experience, salary) {
     console.log(`Updating person with person_id: ${person_id}`);
@@ -88,7 +89,52 @@ async function SQLupdate(person_id, name, experience, salary) {
         }
 
         /* UPDATE => when new values already exist in tables */
-        // TODO
+
+        const IDcounts = {
+            nameIDcount: "",
+            experienceIDcount: "",
+            salaryIDcount: "",
+        };
+
+        /* Check if name_id is unique in people table */
+        const nameIDcount = await getCount("people", "name_id", nameID);
+        IDcounts.nameIDcount = parseInt(nameIDcount.name_id_count);
+        console.log(`nameIDcount: ${IDcounts.nameIDcount}`);
+
+        /* Check if experience_id is unique in people table */
+        const experienceIDcount = await getCount(
+            "people",
+            "experience_id",
+            experienceID,
+        );
+        IDcounts.experienceIDcount = parseInt(
+            experienceIDcount.experience_id_count,
+        );
+        console.log(`experienceIDcount: ${IDcounts.experienceIDcount}`);
+
+        /* Check if salary_id is unique in people table */
+        const salaryIDcount = await getCount("people", "salary_id", salaryID);
+        IDcounts.salaryIDcount = parseInt(salaryIDcount.salary_id_count);
+        console.log(`salaryIDcount: ${IDcounts.salaryIDcount}`);
+
+        /* If name_id is not unique in people table (count of name_id is > 1),
+        update name_id in people table to name_id of (new) name */
+        if (IDcounts.nameIDcount > 1) {
+            let updatedNameID = await updateColumnV2(
+                "people",
+                "name_id",
+                "name_id",
+                "names",
+                "name",
+                "person_id",
+                name,
+                person_id,
+            );
+            updatedNameID = updatedNameID.name_id;
+            console.log(`updatedNameID: ${updatedNameID}`);
+        }
+
+        // Continue with updating experience_id and salary_id
 
         await SQLpool.query("COMMIT;");
         console.log("COMMIT terminates transaction block");
