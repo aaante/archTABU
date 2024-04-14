@@ -3,6 +3,7 @@ import { getAll } from "./getAll.js";
 import { updateColumn } from "./updateColumn.js";
 import { getCount } from "./getCount.js";
 import { updateColumnV2 } from "./updateColumnV2.js";
+import { getSpecific } from "./getSpecific.js";
 
 async function SQLupdate(person_id, name, experience, salary) {
     console.log(`Updating person with person_id: ${person_id}`);
@@ -132,6 +133,27 @@ async function SQLupdate(person_id, name, experience, salary) {
             );
             updatedNameID = updatedNameID.name_id;
             console.log(`updatedNameID: ${updatedNameID}`);
+        } else {
+            /* Get name_id of current (to be changed) name from names table */
+            // DONE at the beggining of function
+
+            /* Update name_id in people table to names_id of (new) name */
+            let updatedNameID = await updateColumnV2(
+                "people",
+                "name_id",
+                "name_id",
+                "names",
+                "name",
+                "person_id",
+                name,
+                person_id,
+            );
+            updatedNameID = updatedNameID.name_id;
+            console.log(`updatedNameID: ${updatedNameID}`);
+
+            /* Delete row in names table where name is old name (name that
+            was updated) */
+            // TODO
         }
 
         /* If experience_id is not unique in people table (count of
