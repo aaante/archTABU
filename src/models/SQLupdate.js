@@ -134,7 +134,41 @@ async function SQLupdate(person_id, name, experience, salary) {
             console.log(`updatedNameID: ${updatedNameID}`);
         }
 
-        // Continue with updating experience_id and salary_id
+        /* If experience_id is not unique in people table (count of
+        experience_id is > 1), update experience_id in people table to
+        experience_id of (new) experience */
+        if (IDcounts.experienceIDcount > 1) {
+            let updatedExperienceID = await updateColumnV2(
+                "people",
+                "experience_id",
+                "experience_id",
+                "experience",
+                "experience",
+                "person_id",
+                experience,
+                person_id,
+            );
+            updatedExperienceID = updatedExperienceID.experience_id;
+            console.log(`updatedExperienceID: ${updatedExperienceID}`);
+        }
+
+        /* If salary_id is not unique in people table (count of salary_id
+        is > 1), update salary_id in people table to salary_id of (new)
+        salary */
+        if (IDcounts.salaryIDcount > 1) {
+            let updatedSalaryID = await updateColumnV2(
+                "people",
+                "salary_id",
+                "salary_id",
+                "salaries",
+                "salary",
+                "person_id",
+                salary,
+                person_id,
+            );
+            updatedSalaryID = updatedSalaryID.salary_id;
+            console.log(`updatedSalaryID: ${updatedSalaryID}`);
+        }
 
         await SQLpool.query("COMMIT;");
         console.log("COMMIT terminates transaction block");
