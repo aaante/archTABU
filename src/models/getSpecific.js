@@ -1,6 +1,6 @@
 import { SQLpool } from "../configs/SQLpool.js";
 
-/* Get specific column value from a table for a specific row*/
+/* Get specific column value from a table for a specific row */
 /* Should be called inside transaction block */
 async function getSpecific(tableName, columnName1, columnName2, value) {
     const result = await SQLpool.query(
