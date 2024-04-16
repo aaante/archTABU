@@ -1,6 +1,9 @@
 # DS Store
 **/.DS_Store
 
+# draw.io backup files
+*.bkp
+
 # Logs
 logs
 *.log
