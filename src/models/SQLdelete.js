@@ -1,5 +1,6 @@
 import { SQLpool } from "../configs/SQLpool.js";
 import { getAll } from "./getAll.js";
+import { getCount } from "./getCount.js";
 
 async function SQLdelete(person_id) {
     console.log(`Deleting person with person_id: ${person_id}`);
@@ -18,38 +19,29 @@ async function SQLdelete(person_id) {
         console.log(`salaryID: ${salaryID}`);
 
         /* Get count of name_id in people */
-        let nameIDcount = await SQLpool.query(
-            "SELECT COUNT(name_id) " + "FROM people " + "WHERE name_id = $1;",
-            [nameID],
-        );
-        nameIDcount = parseInt(nameIDcount.rows[0].count);
+        let nameIDcount = await getCount("people", "name_id", nameID);
+        nameIDcount = parseInt(nameIDcount.name_id_count);
         console.log(`nameIDcount: ${nameIDcount}`);
 
         /* Get count of experience_id in people */
-        let experienceIDcount = await SQLpool.query(
-            "SELECT COUNT(experience_id) " +
-                "FROM people " +
-                "WHERE experience_id = $1;",
-            [experienceID],
+        let experienceIDcount = await getCount(
+            "people",
+            "experience_id",
+            experienceID,
         );
-        experienceIDcount = parseInt(experienceIDcount.rows[0].count);
+        experienceIDcount = parseInt(experienceIDcount.experience_id_count);
         console.log(`experienceIDcount: ${experienceIDcount}`);
 
         /* Get count of salary_id in people */
-        let salaryIDcount = await SQLpool.query(
-            "SELECT COUNT(salary_id) " +
-                "FROM people " +
-                "WHERE salary_id = $1;",
-            [salaryID],
-        );
-        salaryIDcount = parseInt(salaryIDcount.rows[0].count);
+        let salaryIDcount = await getCount("people", "salary_id", salaryID);
+        salaryIDcount = parseInt(salaryIDcount.salary_id_count);
         console.log(`salaryIDcount: ${salaryIDcount}`);
 
         /* Delete from people */
         let deletedPersonID = await SQLpool.query(
             "DELETE FROM people " +
-                "WHERE person_id = $1 " +
-                "RETURNING person_id;",
+            "WHERE person_id = $1 " +
+            "RETURNING person_id;",
             [person_id],
         );
         deletedPersonID = deletedPersonID.rows[0].person_id;
@@ -60,8 +52,8 @@ async function SQLdelete(person_id) {
         if (nameIDcount === 1) {
             let deletedNameID = await SQLpool.query(
                 "DELETE FROM names " +
-                    "WHERE name_id = $1 " +
-                    "RETURNING name_id;",
+                "WHERE name_id = $1 " +
+                "RETURNING name_id;",
                 [nameID],
             );
             deletedNameID = deletedNameID.rows[0].name_id;
@@ -75,8 +67,8 @@ async function SQLdelete(person_id) {
         if (experienceIDcount === 1) {
             let deletedExperienceID = await SQLpool.query(
                 "DELETE FROM experience " +
-                    "WHERE experience_id = $1 " +
-                    "RETURNING experience_id;",
+                "WHERE experience_id = $1 " +
+                "RETURNING experience_id;",
                 [experienceID],
             );
             deletedExperienceID = deletedExperienceID.rows[0].experience_id;
@@ -92,8 +84,8 @@ async function SQLdelete(person_id) {
         if (salaryIDcount === 1) {
             let deletedSalaryID = await SQLpool.query(
                 "DELETE FROM salaries " +
-                    "WHERE salary_id = $1 " +
-                    "RETURNING salary_id;",
+                "WHERE salary_id = $1 " +
+                "RETURNING salary_id;",
                 [salaryID],
             );
             deletedSalaryID = deletedSalaryID.rows[0].salary_id;
