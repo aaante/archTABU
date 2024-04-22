@@ -1,4 +1,4 @@
-import * as pkg from "next/font/google/index.js";
+import * as pkg from "next/font/google";
 
 console.log(pkg);
 
