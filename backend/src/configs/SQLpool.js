@@ -1,8 +1,8 @@
-import pkg from "pg";
-const { Pool } = pkg;
+import pg from "pg";
+const { Pool } = pg;
 
 export const POOL_CONFIG = (function() {
-    const poolData = {
+    const _poolData = {
         user: "antesusic",
         password: "postgres",
         host: "127.0.0.1",
@@ -13,7 +13,11 @@ export const POOL_CONFIG = (function() {
         idleTimeoutMillis: 0,
     };
 
-    const pool = new Pool(poolData);
+    const _pool = new Pool(_poolData);
 
-    return { pool };
+    const getPool = function() {
+        return _pool;
+    }
+
+    return { pool: getPool };
 })();

@@ -1,17 +1,21 @@
 import { POOL_CONFIG } from "../configs/SQLpool.js";
 const { pool } = POOL_CONFIG;
+import { MODEL } from "./model.js";
+const { salariesTable } = MODEL;
 
-export const select = (async function() {
-    const client = await pool.connect();
-
+export const select = (function() {
     const getAverageSalary = async function() {
+        const client = await pool().connect();
+
         try {
             await client.query("BEGIN;");
             console.log("BEGIN initiates a transaction block");
 
-            const avgSalaries = await client.query(
-                "SELECT ROUND(AVG(salary)) " + "FROM salaries;",
-            );
+            const queryText = `
+                SELECT ROUND(AVG(${salariesTable().salaryColumn}))
+                FROM ${salariesTable().salariesTableName}
+                `;
+            const avgSalaries = await client.query(queryText);
             console.log("Average salary:", avgSalaries.rows[0].round);
 
             await client.query("COMMIT;");
@@ -29,9 +33,7 @@ export const select = (async function() {
         }
     };
 
-    return { getAverageSalary };
+    return { getAverageSalary: getAverageSalary };
 })();
-
-console.log(await select);
 
 await select.getAverageSalary();
