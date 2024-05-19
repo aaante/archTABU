@@ -11,17 +11,17 @@ export const select = (function() {
             await client.query("BEGIN;");
             console.log("BEGIN initiates a transaction block");
 
-            const queryText = `
+            const queryTextGetAverageSalary = `
                 SELECT ROUND(AVG(${salariesTable().salaryColumn}))
-                FROM ${salariesTable().salariesTableName}
+                FROM ${salariesTable().salariesTableName};
                 `;
-            const avgSalaries = await client.query(queryText);
-            console.log("Average salary:", avgSalaries.rows[0].round);
+            const averageSalary = await client.query(queryTextGetAverageSalary);
+            console.log("Average salary:", averageSalary.rows[0].round);
 
             await client.query("COMMIT;");
             console.log("COMMIT terminates transaction block");
 
-            return avgSalaries.rows[0].round;
+            return averageSalary.rows[0].round;
         } catch (ex) {
             console.log(`Something happened ${ex}`);
 
