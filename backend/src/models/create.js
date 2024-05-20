@@ -5,7 +5,7 @@ const { namesTable, experienceTable, salariesTable, peopleTable } = MODEL;
 import { createUtility } from "./createUtility.js";
 const { insertRowOnConflictReturningId, insertRow } = createUtility;
 
-export const create = (function() {
+export const create = (function () {
     async function insertUserData(name, experience, salary) {
         const client = await pool().connect();
 
@@ -14,44 +14,38 @@ export const create = (function() {
             console.log("BEGIN initiates a transaction block");
 
             // Insert name_id, name into names table
-            const returnedNameId = parseInt(
-                await insertRowOnConflictReturningId(
-                    client,
-                    namesTable().namesTableName,
-                    namesTable().nameIdColumn,
-                    namesTable().nameColumn,
-                    name,
-                ).name_id,
+            let returnedNameId = await insertRowOnConflictReturningId(
+                client,
+                namesTable().namesTableName,
+                namesTable().nameIdColumn,
+                namesTable().nameColumn,
+                name,
             );
-            console.log(typeof(returnedNameId));
+            returnedNameId = returnedNameId.name_id;
             console.log(`name_id: ${returnedNameId}, name: ${name}`);
 
             // Insert experience_id, experience into experience table
-            const returnedExperienceId = parseInt(
-                await insertRowOnConflictReturningId(
-                    client,
-                    experienceTable().experienceTableName,
-                    experienceTable().experienceIdColumn,
-                    experienceTable().experienceColumn,
-                    experience,
-                ).experience_id,
+            let returnedExperienceId = await insertRowOnConflictReturningId(
+                client,
+                experienceTable().experienceTableName,
+                experienceTable().experienceIdColumn,
+                experienceTable().experienceColumn,
+                experience,
             );
-            console.log(typeof(returnedExperienceId));
+            returnedExperienceId = returnedExperienceId.experience_id;
             console.log(
                 `experience_id: ${returnedExperienceId}, experience: ${experience}`,
             );
 
             // Insert salary into salaries table
-            const returnedSalaryId = parseInt(
-                await insertRowOnConflictReturningId(
-                    client,
-                    salariesTable().salariesTableName,
-                    salariesTable().salaryIdColumn,
-                    salariesTable().salaryColumn,
-                    salary,
-                ).salary_id,
+            let returnedSalaryId = await insertRowOnConflictReturningId(
+                client,
+                salariesTable().salariesTableName,
+                salariesTable().salaryIdColumn,
+                salariesTable().salaryColumn,
+                salary,
             );
-            console.log(typeof(returnedSalaryId));
+            returnedSalaryId = returnedSalaryId.salary_id;
             console.log(`salary_id: ${returnedSalaryId}, salary: ${salary}`);
 
             // Insert name_id, experience_id, salary_id into people table
@@ -66,8 +60,8 @@ export const create = (function() {
 
             console.log(
                 `name_id ${returnedNameId}, ` +
-                `experience_id ${returnedSalaryId}, ` +
-                `salary_id ${returnedSalaryId} inserted in table people`,
+                    `experience_id ${returnedExperienceId}, ` +
+                    `salary_id ${returnedSalaryId} inserted in table people`,
             );
 
             await client.query("COMMIT;");

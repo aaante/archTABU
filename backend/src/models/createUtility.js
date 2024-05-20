@@ -7,7 +7,7 @@ export const createUtility = (function() {
 
         const returnedId = maxId.rows[0].max + 1;
 
-        return parseInt(returnedId);
+        return returnedId;
     }
 
     /*
@@ -21,6 +21,8 @@ export const createUtility = (function() {
         columnName,
         value
     ) {
+        const generatedId = await generateId(client, idColumnName, tableName);
+
         const returnedId = await client.query(
             `
             WITH row AS (
@@ -35,7 +37,7 @@ export const createUtility = (function() {
             SELECT ${idColumnName} FROM ${tableName}
             WHERE ${columnName} = $2;
             `,
-            [await generateId(client, idColumnName, tableName), value],
+            [generatedId, value],
         );
 
         return returnedId.rows[0];
@@ -49,13 +51,15 @@ export const createUtility = (function() {
         value2,
         value3,
     ) {
+        const generatedId = await generateId(client, idColumnName, tableName);
+
         await client.query(
             `
             INSERT INTO ${tableName}
             VALUES ($1, $2, $3, $4);
             `,
             [
-                await generateId(client, idColumnName, tableName),
+                generatedId,
                 value1,
                 value2,
                 value3,
