@@ -2,8 +2,6 @@ import { POOL_CONFIG } from "../configs/SQLpool.js";
 const { pool } = POOL_CONFIG;
 import { MODEL } from "./model.js";
 const { salariesTable } = MODEL;
-import { get } from "./get.js";
-const { getAverageColumnValue } = get;
 
 export const select = (function() {
     const getAverageSalary = async function() {
@@ -13,12 +11,12 @@ export const select = (function() {
             await client.query("BEGIN;");
             console.log("BEGIN initiates a transaction block");
 
-            const averageSalary = await getAverageColumnValue(
-                client,
-                salariesTable().salaryColumn,
-                salariesTable().salariesTableName,
-            );
-            console.log(`Average salary: ${averageSalary}`);
+            const queryTextGetAverageSalary = `
+                SELECT ROUND(AVG(${salariesTable().salaryColumn}))
+                FROM ${salariesTable().salariesTableName};
+                `;
+            const averageSalary = await client.query(queryTextGetAverageSalary);
+            console.log("Average salary:", averageSalary.rows[0].round);
 
             await client.query("COMMIT;");
             console.log("COMMIT terminates transaction block");
@@ -38,5 +36,4 @@ export const select = (function() {
     return { getAverageSalary: getAverageSalary };
 })();
 
-// Delete after testing
 await select.getAverageSalary();

@@ -1,6 +1,6 @@
 import { SQLpool } from "../configs/SQLpool.js";
 
-/* Update colum in table */
+/* Update column in table */
 /* Should be called inside transaction block */
 async function updateColumnV2(
     tableName1,
