@@ -1,5 +1,9 @@
-export const readCrudUtility = (function () {
-    async function getAverageColumnValue(client, columnName, tableName) {
+export const readCrudUtility = (function() {
+    const getAverageColumnValue = async function(
+        client,
+        columnName,
+        tableName,
+    ) {
         const averageColumnValue = await client.query(
             `
             SELECT ROUND(AVG(${columnName}))
@@ -7,9 +11,9 @@ export const readCrudUtility = (function () {
             `,
         );
         return averageColumnValue.rows[0].round;
-    }
+    };
 
-    async function getAllValuesInRow(
+    const getAllValuesInRow = async function(
         client,
         tableName,
         columnName1,
@@ -20,7 +24,7 @@ export const readCrudUtility = (function () {
     ) {
         const result = await client.query(
             `
-            SELECT ${columnName1, columnName2, columnName3, columnName4}
+            SELECT ${(columnName1, columnName2, columnName3, columnName4)}
             FROM ${tableName}
             WHERE ${columnName1} = $1;
             `,
@@ -28,11 +32,25 @@ export const readCrudUtility = (function () {
         );
 
         return result.rows[0];
-    }
+    };
 
-    async function getCountOfColumnValue() {
-        return;
-    }
+    const getCountOfColumnValue = async function(
+        client,
+        tableName,
+        columnName,
+        value,
+    ) {
+        const result = await client.query(
+            `
+            SELECT COUNT(${columnName}) AS ${columnName}_count
+            FROM ${tableName}
+            WHERE ${columnName} = $1;
+            `,
+            [value],
+        );
+
+        return result.rows[0];
+    };
 
     return {
         getAverageColumnValue: getAverageColumnValue,

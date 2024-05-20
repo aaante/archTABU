@@ -6,7 +6,7 @@ import { createCrudUtility } from "./createCrudUtility.js";
 const { insertRowOnConflictReturningId, insertRow } = createCrudUtility;
 
 export const createCrud = (function () {
-    async function insertUserData(name, experience, salary) {
+    const insertUserData = async function(name, experience, salary) {
         const client = await pool().connect();
 
         try {
