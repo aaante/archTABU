@@ -131,7 +131,8 @@ export const deleteCrud = (function() {
             await client.query("ROLLBACK;");
             console.log("ROLLBACK terminates transaction block");
         } finally {
-            console.log("Waiting for transaction...");
+            console.log("Client released");
+            client.release();
         }
     };
 
