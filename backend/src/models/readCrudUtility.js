@@ -24,7 +24,7 @@ export const readCrudUtility = (function() {
     ) {
         const result = await client.query(
             `
-            SELECT ${(columnName1, columnName2, columnName3, columnName4)}
+            SELECT ${columnName1}, ${columnName2}, ${columnName3}, ${columnName4}
             FROM ${tableName}
             WHERE ${columnName1} = $1;
             `,

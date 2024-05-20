@@ -1,28 +1,28 @@
 export const MODEL = (function() {
     const namesTable = {
         namesTableName: "names",
-        nameIdColumn: "nameid",
+        nameIdColumn: "name_id",
         nameColumn: "name",
     };
 
     const experienceTable = {
         experienceTableName: "experience",
-        experienceIdColumn: "experienceid",
+        experienceIdColumn: "experience_id",
         experienceColumn: "experience",
     };
 
     const salariesTable = {
         salariesTableName: "salaries",
-        salaryIdColumn: "salaryid",
+        salaryIdColumn: "salary_id",
         salaryColumn: "salary",
     };
 
     const peopleTable = {
         peopleTableName: "people",
-        personIdColumn: "personid",
-        nameIdColumn: "nameid",
-        experienceIdColumn: "experienceid",
-        salaryIdColumn: "salaryid",
+        personIdColumn: "person_id",
+        nameIdColumn: "name_id",
+        experienceIdColumn: "experience_id",
+        salaryIdColumn: "salary_id",
     };
 
     const getNamesTable = function() {

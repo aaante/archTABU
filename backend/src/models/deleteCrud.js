@@ -7,8 +7,6 @@ const { getAllValuesInRow, getCountOfColumnValue } = readCrudUtility;
 import { deleteCrudUtility } from "./deleteCrudUtility.js";
 const { deleteRowReturningId } = deleteCrudUtility;
 
-import { getCount } from "./getCount.js";
-
 export const deleteCrud = (function() {
     const deleteUserData = async function(person_id) {
         const client = await pool().connect();
@@ -29,6 +27,8 @@ export const deleteCrud = (function() {
                 peopleTable().salaryIdColumn,
                 person_id,
             );
+
+            console.log(ids);
 
             const nameId = ids.name_id;
             const experienceId = ids.experience_id;
@@ -82,16 +82,14 @@ export const deleteCrud = (function() {
             /* Delete row from names only if name_id is unique 
             (name_id count === 1) in people */
             if (nameIdCount === 1) {
-                // let deletedNameId = await client.query(
-                //     "DELETE FROM names " +
-                //     "WHERE name_id = $1 " +
-                //     "RETURNING name_id;",
-                //     [nameId],
-                // );
-
-                let deletedNameId = await 
-
-                deletedNameId = deletedNameId.rows[0].name_id;
+                let deletedNameId = await deleteRowReturningId(
+                    client,
+                    namesTable().namesTableName,
+                    namesTable().nameIdColumn,
+                    namesTable().nameIdColumn,
+                    nameId,
+                );
+                deletedNameId = deletedNameId.name_id;
                 console.log(`deletedNameId: ${deletedNameId}`);
             } else {
                 console.log("Row in names not deleted (name_id is not unique)");
@@ -100,13 +98,14 @@ export const deleteCrud = (function() {
             /* Delete row from experience only if experience_id is unique
             (experience_id count === 1) in people */
             if (experienceIdCount === 1) {
-                let deletedExperienceId = await client.query(
-                    "DELETE FROM experience " +
-                    "WHERE experience_id = $1 " +
-                    "RETURNING experience_id;",
-                    [experienceId],
+                let deletedExperienceId = await deleteRowReturningId(
+                    client,
+                    experienceTable().experienceTableName,
+                    experienceTable().experienceIdColumn,
+                    experienceTable().experienceIdColumn,
+                    experienceId,
                 );
-                deletedExperienceId = deletedExperienceId.rows[0].experience_id;
+                deletedExperienceId = deletedExperienceId.experience_id;
                 console.log(`deletedExperienceId: ${deletedExperienceId}`);
             } else {
                 console.log(
@@ -117,13 +116,14 @@ export const deleteCrud = (function() {
             /* Delete row from salaries only if salary_id is unique
             (salary_id count === 1) in people */
             if (salaryIdCount === 1) {
-                let deletedSalaryId = await client.query(
-                    "DELETE FROM salaries " +
-                    "WHERE salary_id = $1 " +
-                    "RETURNING salary_id;",
-                    [salaryId],
+                let deletedSalaryId = await deleteRowReturningId(
+                    client,
+                    salariesTable().salariesTableName,
+                    salariesTable().salaryIdColumn,
+                    salariesTable().salaryIdColumn,
+                    salaryId,
                 );
-                deletedSalaryId = deletedSalaryId.rows[0].salary_id;
+                deletedSalaryId = deletedSalaryId.salary_id;
                 console.log(`deletedSalaryId: ${deletedSalaryId}`);
             } else {
                 console.log(
@@ -145,3 +145,6 @@ export const deleteCrud = (function() {
 
     return { deleteUserData: deleteUserData };
 })();
+
+// Delete after testing
+await deleteCrud.deleteUserData(14);
