@@ -1,4 +1,4 @@
-export const get = (function() {
+export const readUtility = (function() {
     async function getAverageColumnValue(client, columnName, tableName) {
         const averageColumnValue = await client.query(
             `

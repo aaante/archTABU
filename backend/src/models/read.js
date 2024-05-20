@@ -1,11 +1,11 @@
-import { POOL_CONFIG } from "../configs/SQLpool.js";
+import { POOL_CONFIG } from "../configs/poolConfig.js";
 const { pool } = POOL_CONFIG;
 import { MODEL } from "./model.js";
 const { salariesTable } = MODEL;
-import { get } from "./get.js";
-const { getAverageColumnValue } = get;
+import { readUtility } from "./readUtility.js";
+const { getAverageColumnValue } = readUtility;
 
-export const select = (function() {
+export const read = (function() {
     const getAverageSalary = async function() {
         const client = await pool().connect();
 
@@ -23,7 +23,7 @@ export const select = (function() {
             await client.query("COMMIT;");
             console.log("COMMIT terminates transaction block");
 
-            return averageSalary.rows[0].round;
+            return averageSalary;
         } catch (ex) {
             console.log(`Something happened ${ex}`);
 
@@ -39,5 +39,5 @@ export const select = (function() {
 })();
 
 // Delete after testing
-await select.getAverageSalary();
+await read.getAverageSalary();
 

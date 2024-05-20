@@ -19,7 +19,7 @@ export const MODEL = (function() {
 
     const _peopleTable = {
         peopleTableName: "people",
-        personIinputdColumn: "person_id",
+        personIdColumn: "person_id",
         nameIdColumn: "name_id",
         experienceIdColumn: "experience_id",
         salaryIdColumn: "salary_id",
