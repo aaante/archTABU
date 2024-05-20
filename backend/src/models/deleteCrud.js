@@ -27,22 +27,14 @@ export const deleteCrud = (function() {
                 peopleTable().salaryIdColumn,
                 person_id,
             );
-
             console.log(ids);
-
-            const nameId = ids.name_id;
-            const experienceId = ids.experience_id;
-            const salaryId = ids.salary_id;
-            console.log(`nameId: ${nameId}`);
-            console.log(`experienceId: ${experienceId}`);
-            console.log(`salaryId: ${salaryId}`);
 
             /* Get count of name_id in people */
             let nameIdCount = await getCountOfColumnValue(
                 client,
                 peopleTable().peopleTableName,
                 peopleTable().nameIdColumn,
-                nameId,
+                ids.name_id,
             );
             nameIdCount = parseInt(nameIdCount.name_id_count);
             console.log(`nameIdCount: ${nameIdCount}`);
@@ -52,7 +44,7 @@ export const deleteCrud = (function() {
                 client,
                 peopleTable().peopleTableName,
                 peopleTable().experienceIdColumn,
-                experienceId,
+                ids.experience_id,
             );
             experienceIdCount = parseInt(experienceIdCount.experience_id_count);
             console.log(`experienceIdCount: ${experienceIdCount}`);
@@ -62,7 +54,7 @@ export const deleteCrud = (function() {
                 client,
                 peopleTable().peopleTableName,
                 peopleTable().salaryIdColumn,
-                salaryId,
+                ids.salary_id,
             );
             salaryIdCount = parseInt(salaryIdCount.salary_id_count);
             console.log(`salaryIdCount: ${salaryIdCount}`);
@@ -87,7 +79,7 @@ export const deleteCrud = (function() {
                     namesTable().namesTableName,
                     namesTable().nameIdColumn,
                     namesTable().nameIdColumn,
-                    nameId,
+                    ids.name_id,
                 );
                 deletedNameId = deletedNameId.name_id;
                 console.log(`deletedNameId: ${deletedNameId}`);
@@ -103,7 +95,7 @@ export const deleteCrud = (function() {
                     experienceTable().experienceTableName,
                     experienceTable().experienceIdColumn,
                     experienceTable().experienceIdColumn,
-                    experienceId,
+                    ids.experience_id,
                 );
                 deletedExperienceId = deletedExperienceId.experience_id;
                 console.log(`deletedExperienceId: ${deletedExperienceId}`);
@@ -121,7 +113,7 @@ export const deleteCrud = (function() {
                     salariesTable().salariesTableName,
                     salariesTable().salaryIdColumn,
                     salariesTable().salaryIdColumn,
-                    salaryId,
+                    ids.salary_id,
                 );
                 deletedSalaryId = deletedSalaryId.salary_id;
                 console.log(`deletedSalaryId: ${deletedSalaryId}`);
@@ -147,4 +139,4 @@ export const deleteCrud = (function() {
 })();
 
 // Delete after testing
-await deleteCrud.deleteUserData(14);
+await deleteCrud.deleteUserData(13);
