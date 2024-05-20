@@ -1,44 +1,44 @@
 export const MODEL = (function() {
-    const _namesTable = {
+    const namesTable = {
         namesTableName: "names",
-        nameIdColumn: "name_id",
+        nameIdColumn: "nameid",
         nameColumn: "name",
     };
 
-    const _experienceTable = {
+    const experienceTable = {
         experienceTableName: "experience",
-        experienceIdColumn: "experience_id",
+        experienceIdColumn: "experienceid",
         experienceColumn: "experience",
     };
 
-    const _salariesTable = {
+    const salariesTable = {
         salariesTableName: "salaries",
-        salaryIdColumn: "salary_id",
+        salaryIdColumn: "salaryid",
         salaryColumn: "salary",
     };
 
-    const _peopleTable = {
+    const peopleTable = {
         peopleTableName: "people",
-        personIdColumn: "person_id",
-        nameIdColumn: "name_id",
-        experienceIdColumn: "experience_id",
-        salaryIdColumn: "salary_id",
+        personIdColumn: "personid",
+        nameIdColumn: "nameid",
+        experienceIdColumn: "experienceid",
+        salaryIdColumn: "salaryid",
     };
 
     const getNamesTable = function() {
-        return _namesTable;
+        return namesTable;
     };
 
     const getExperienceTable = function() {
-        return _experienceTable;
+        return experienceTable;
     };
 
     const getSalariesTable = function() {
-        return _salariesTable;
+        return salariesTable;
     };
 
     const getPeopleTable = function() {
-        return _peopleTable;
+        return peopleTable;
     };
     return {
         namesTable: getNamesTable,

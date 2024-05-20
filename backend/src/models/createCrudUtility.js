@@ -1,4 +1,4 @@
-export const createUtility = (function() {
+export const createCrudUtility = (function() {
     // Query for MAX id number and return that id number + 1
     async function generateId(client, idColumnName, tableName) {
         const maxId = await client.query(
@@ -70,7 +70,6 @@ export const createUtility = (function() {
     }
 
     return {
-        generateId: generateId,
         insertRowOnConflictReturningId: insertRowOnConflictReturningId,
         insertRow: insertRow,
     };

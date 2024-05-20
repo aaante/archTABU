@@ -2,10 +2,10 @@ import { POOL_CONFIG } from "../configs/poolConfig.js";
 const { pool } = POOL_CONFIG;
 import { MODEL } from "./model.js";
 const { salariesTable } = MODEL;
-import { readUtility } from "./readUtility.js";
-const { getAverageColumnValue } = readUtility;
+import { readCrudUtility } from "./readCrudUtility.js";
+const { getAverageColumnValue } = readCrudUtility;
 
-export const read = (function() {
+export const readCrud = (function() {
     const getAverageSalary = async function() {
         const client = await pool().connect();
 
@@ -39,5 +39,5 @@ export const read = (function() {
 })();
 
 // Delete after testing
-await read.getAverageSalary();
+await readCrud.getAverageSalary();
 

@@ -2,10 +2,10 @@ import { POOL_CONFIG } from "../configs/poolConfig.js";
 const { pool } = POOL_CONFIG;
 import { MODEL } from "./model.js";
 const { namesTable, experienceTable, salariesTable, peopleTable } = MODEL;
-import { createUtility } from "./createUtility.js";
-const { insertRowOnConflictReturningId, insertRow } = createUtility;
+import { createCrudUtility } from "./createCrudUtility.js";
+const { insertRowOnConflictReturningId, insertRow } = createCrudUtility;
 
-export const create = (function () {
+export const createCrud = (function () {
     async function insertUserData(name, experience, salary) {
         const client = await pool().connect();
 
@@ -81,4 +81,4 @@ export const create = (function () {
 })();
 
 // Delete after testing
-await create.insertUserData("Goran", 8, 5000);
+await createCrud.insertUserData("Goran", 8, 5000);
