@@ -1,10 +1,8 @@
-// Import essentials
 import express from "express";
 const app = express();
 const port = 3000;
 const __dirname = import.meta.dirname;
 
-// Import model functions
 import { createCrud } from "./models/createCrud.js";
 const { insertUserData } = createCrud;
 import { readCrud } from "./models/readCrud.js";
@@ -14,13 +12,12 @@ const { updateUserData } = updateCrud;
 import { deleteCrud } from "./models/deleteCrud.js";
 const { deleteUserData } = deleteCrud;
 
-app.use(express.static(__dirname + "/static"));
+// app.use(express.static(__dirname + "/static"));
 app.use(express.json());
 
-// View: index.html
-app.get("/index", (req, res) => {
-    res.sendFile(__dirname + "/public/index.html");
-});
+// app.get("/index", (req, res) => {
+//     res.sendFile(__dirname + "/public/index.html");
+// });
 
 app.post("/", async (req, res) => {
     try {
@@ -36,16 +33,16 @@ app.post("/", async (req, res) => {
     }
 });
 
-app.get("/", async (req, res) => {
-    let avg;
-    try {
-        avg = await getAverageSalary();
-    } catch (error) {
-        console.error(error);
-    } finally {
-        res.send(`Average salary: ${avg}`);
-    }
-});
+// app.get("/", async (req, res) => {
+//     let avg;
+//     try {
+//         avg = await getAverageSalary();
+//     } catch (error) {
+//         console.error(error);
+//     } finally {
+//         res.send(`Average salary: ${avg}`);
+//     }
+// });
 
 app.put("/", async (req, res) => {
     try {
