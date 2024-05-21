@@ -11,8 +11,8 @@ const { updateColumnReturningValue, updateColumnReturningId } =
 import { deleteCrudUtility } from "./deleteCrudUtility.js";
 const { deleteRowReturningId } = deleteCrudUtility;
 
-export const updateCrud = (function () {
-    const updateUserData = async function (
+export const updateCrud = (function() {
+    const updateUserData = async function(
         person_id,
         name,
         experience,
@@ -367,6 +367,3 @@ export const updateCrud = (function () {
 
     return { updateUserData: updateUserData };
 })();
-
-// Delete after testing
-await updateCrud.updateUserData(2, "Avocado", 6, 4500);

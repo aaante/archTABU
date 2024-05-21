@@ -138,6 +138,3 @@ export const deleteCrud = (function() {
 
     return { deleteUserData: deleteUserData };
 })();
-
-// Delete after testing
-await deleteCrud.deleteUserData(13);

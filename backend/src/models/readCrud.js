@@ -37,7 +37,3 @@ export const readCrud = (function() {
 
     return { getAverageSalary: getAverageSalary };
 })();
-
-// Delete after testing
-await readCrud.getAverageSalary();
-

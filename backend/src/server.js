@@ -5,10 +5,14 @@ const port = 3000;
 const __dirname = import.meta.dirname;
 
 // Import model functions
-import { SQLinsert } from "./models/SQLinsert.js";
-import { SQLselect } from "./models/SQLselect.js";
-import { SQLupdate } from "./models/SQLupdate.js";
-import { SQLdelete } from "./models/SQLdelete.js";
+import { createCrud } from "./models/createCrud.js";
+const { insertUserData } = createCrud;
+import { readCrud } from "./models/readCrud.js";
+const { getAverageSalary } = readCrud;
+import { updateCrud } from "./models/updateCrud.js";
+const { updateUserData } = updateCrud;
+import { deleteCrud } from "./models/deleteCrud.js";
+const { deleteUserData } = deleteCrud;
 
 app.use(express.static(__dirname + "/static"));
 app.use(express.json());
@@ -20,7 +24,7 @@ app.get("/index", (req, res) => {
 
 app.post("/", async (req, res) => {
     try {
-        await SQLinsert(
+        await insertUserData(
             req.body.name,
             parseInt(req.body.experience),
             parseInt(req.body.salary),
@@ -35,7 +39,7 @@ app.post("/", async (req, res) => {
 app.get("/", async (req, res) => {
     let avg;
     try {
-        avg = await SQLselect();
+        avg = await getAverageSalary();
     } catch (error) {
         console.error(error);
     } finally {
@@ -45,7 +49,7 @@ app.get("/", async (req, res) => {
 
 app.put("/", async (req, res) => {
     try {
-        await SQLupdate(
+        await updateUserData(
             parseInt(req.body.id),
             req.body.name,
             parseInt(req.body.experience),
@@ -60,7 +64,7 @@ app.put("/", async (req, res) => {
 
 app.delete("/", async (req, res) => {
     try {
-        await SQLdelete(req.body.id);
+        await deleteUserData(req.body.id);
     } catch (error) {
         console.error(error);
     } finally {

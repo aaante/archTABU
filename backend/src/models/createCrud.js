@@ -5,7 +5,7 @@ const { namesTable, experienceTable, salariesTable, peopleTable } = MODEL;
 import { createCrudUtility } from "./createCrudUtility.js";
 const { insertRowOnConflictReturningId, insertRow } = createCrudUtility;
 
-export const createCrud = (function () {
+export const createCrud = (function() {
     const insertUserData = async function(name, experience, salary) {
         const client = await pool().connect();
 
@@ -60,8 +60,8 @@ export const createCrud = (function () {
 
             console.log(
                 `name_id ${returnedNameId}, ` +
-                    `experience_id ${returnedExperienceId}, ` +
-                    `salary_id ${returnedSalaryId} inserted in table people`,
+                `experience_id ${returnedExperienceId}, ` +
+                `salary_id ${returnedSalaryId} inserted in table people`,
             );
 
             await client.query("COMMIT;");
@@ -75,10 +75,7 @@ export const createCrud = (function () {
             console.log("Client released");
             client.release();
         }
-    }
+    };
 
     return { insertUserData: insertUserData };
 })();
-
-// Delete after testing
-await createCrud.insertUserData("Goran", 8, 5000);
