@@ -17,7 +17,7 @@ export const deleteCrud = (function() {
             await client.query("BEGIN;");
             console.log("BEGIN initiates a transaction block");
 
-            /* Get all id columns from people */
+            /* Get all id column values from people */
             const ids = await getAllValuesInRow(
                 client,
                 peopleTable().peopleTableName,

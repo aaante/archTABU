@@ -1,15 +1,18 @@
 import { POOL_CONFIG } from "../configs/poolConfig.js";
 const { pool } = POOL_CONFIG;
+import { MODEL } from "./model.js";
+const { namesTable, experienceTable, salariesTable, peopleTable } = MODEL;
+import { readCrudUtility } from "./readCrudUtility.js";
+const { getSpecificValueInRow, getAllValuesInRow, getCountOfColumnValue } =
+    readCrudUtility;
+import { updateCrudUtility } from "./updateCrudUtility.js";
+const { updateColumnReturningValue, updateColumnReturningId } =
+    updateCrudUtility;
+import { deleteCrudUtility } from "./deleteCrudUtility.js";
+const { deleteRowReturningId } = deleteCrudUtility;
 
-import { getAll } from "./getAll.js";
-import { updateColumn } from "./updateColumn.js";
-import { getCount } from "./getCount.js";
-import { updateColumnV2 } from "./updateColumnV2.js";
-import { deleteRow } from "./deleteRow.js";
-import { getSpecificV2 } from "./getSpecificV2.js";
-
-export const updateCrud = (function() {
-    const updateUserData = async function(
+export const updateCrud = (function () {
+    const updateUserData = async function (
         person_id,
         name,
         experience,
@@ -24,28 +27,31 @@ export const updateCrud = (function() {
             console.log("BEGIN initiates a transaction block");
 
             /* Get name, experience, salary to be changed */
-            let nameToChange = await getSpecificV2(
-                "names",
-                "people",
-                "name",
-                "name_id",
-                "person_id",
+            let nameToChange = await getSpecificValueInRow(
+                client,
+                namesTable().nameColumn,
+                namesTable().namesTableName,
+                namesTable().nameIdColumn,
+                peopleTable().peopleTableName,
+                peopleTable().personIdColumn,
                 person_id,
             );
-            let experienceToChange = await getSpecificV2(
-                "experience",
-                "people",
-                "experience",
-                "experience_id",
-                "person_id",
+            let experienceToChange = await getSpecificValueInRow(
+                client,
+                experienceTable().experienceColumn,
+                experienceTable().experienceTableName,
+                experienceTable().experienceIdColumn,
+                peopleTable().peopleTableName,
+                peopleTable().personIdColumn,
                 person_id,
             );
-            let salaryToChange = await getSpecificV2(
-                "salaries",
-                "people",
-                "salary",
-                "salary_id",
-                "person_id",
+            let salaryToChange = await getSpecificValueInRow(
+                client,
+                salariesTable().salaryColumn,
+                salariesTable().salariesTableName,
+                salariesTable().salaryIdColumn,
+                peopleTable().peopleTableName,
+                peopleTable().personIdColumn,
                 person_id,
             );
             nameToChange = nameToChange.name;
@@ -56,14 +62,16 @@ export const updateCrud = (function() {
             console.log(`salaryToChange: ${salaryToChange}`);
 
             /* Get all id column values from people */
-            const ids = await getAll("people", "person_id", person_id);
-
-            const nameID = ids.name_id;
-            const experienceID = ids.experience_id;
-            const salaryID = ids.salary_id;
-            console.log(`nameID: ${nameID}`);
-            console.log(`experienceID: ${experienceID}`);
-            console.log(`salaryID: ${salaryID}`);
+            const ids = await getAllValuesInRow(
+                client,
+                peopleTable().peopleTableName,
+                peopleTable().personIdColumn,
+                peopleTable().nameIdColumn,
+                peopleTable().experienceIdColumn,
+                peopleTable().salaryIdColumn,
+                person_id,
+            );
+            console.log(ids);
 
             const counts = {
                 nameCount: "",
@@ -72,64 +80,83 @@ export const updateCrud = (function() {
             };
 
             /* Check if name already exists in names table */
-            const nameCount = await getCount("names", "name", name);
+            const nameCount = await getCountOfColumnValue(
+                client,
+                namesTable().namesTableName,
+                namesTable().nameColumn,
+                name,
+            );
             counts.nameCount = parseInt(nameCount.name_count);
             console.log(`nameCount: ${counts.nameCount}`);
 
             /* Check if experience already exists in experience table */
-            const experienceCount = await getCount(
-                "experience",
-                "experience",
+            const experienceCount = await getCountOfColumnValue(
+                client,
+                experienceTable().experienceTableName,
+                experienceTable().experienceColumn,
                 experience,
             );
             counts.experienceCount = parseInt(experienceCount.experience_count);
             console.log(`experienceCount: ${counts.nameCount}`);
 
             /* Check if salary already exists in salaries table */
-            const salaryCount = await getCount("salaries", "salary", salary);
+            const salaryCount = await getCountOfColumnValue(
+                client,
+                salariesTable().salariesTableName,
+                salariesTable().salaryColumn,
+                salary,
+            );
             counts.salaryCount = parseInt(salaryCount.salary_count);
             console.log(`salaryCount: ${counts.salaryCount}`);
 
-            const IDcounts = {
-                nameIDcount: "",
-                experienceIDcount: "",
-                salaryIDcount: "",
+            const idCounts = {
+                nameIdCount: "",
+                experienceIdCount: "",
+                salaryIdCount: "",
             };
 
             /* Check if name_id is unique in people table */
-            const nameIDcount = await getCount("people", "name_id", nameID);
-            IDcounts.nameIDcount = parseInt(nameIDcount.name_id_count);
-            console.log(`nameIDcount: ${IDcounts.nameIDcount}`);
+            const nameIdCount = await getCountOfColumnValue(
+                client,
+                peopleTable().peopleTableName,
+                peopleTable().nameIdColumn,
+                ids.name_id,
+            );
+            idCounts.nameIdCount = parseInt(nameIdCount.name_id_count);
+            console.log(`nameIdCount: ${idCounts.nameIdCount}`);
 
             /* Check if experience_id is unique in people table */
-            const experienceIDcount = await getCount(
-                "people",
-                "experience_id",
-                experienceID,
+            const experienceIdCount = await getCountOfColumnValue(
+                client,
+                peopleTable().peopleTableName,
+                peopleTable().experienceIdColumn,
+                ids.experience_id,
             );
-            IDcounts.experienceIDcount = parseInt(
-                experienceIDcount.experience_id_count,
+            idCounts.experienceIdCount = parseInt(
+                experienceIdCount.experience_id_count,
             );
-            console.log(`experienceIDcount: ${IDcounts.experienceIDcount}`);
+            console.log(`experienceIdCount: ${idCounts.experienceIdCount}`);
 
             /* Check if salary_id is unique in people table */
-            const salaryIDcount = await getCount(
-                "people",
-                "salary_id",
-                salaryID,
+            const salaryIdCount = await getCountOfColumnValue(
+                client,
+                peopleTable().peopleTableName,
+                peopleTable().salaryIdColumn,
+                ids.salary_id,
             );
-            IDcounts.salaryIDcount = parseInt(salaryIDcount.salary_id_count);
-            console.log(`salaryIDcount: ${IDcounts.salaryIDcount}`);
+            idCounts.salaryIdCount = parseInt(salaryIdCount.salary_id_count);
+            console.log(`salaryIdCount: ${idCounts.salaryIdCount}`);
 
             /* If name doesn't already exist in names table, update names table */
             if (counts.nameCount === 0) {
                 console.log("--- New name ---");
-                let updatedName = await updateColumn(
-                    "names",
-                    "name",
-                    "name_id",
+                let updatedName = await updateColumnReturningValue(
+                    client,
+                    namesTable().namesTableName,
+                    namesTable().nameColumn,
+                    namesTable().nameIdColumn,
                     name,
-                    nameID,
+                    ids.name_id,
                 );
                 updatedName = updatedName.name;
                 console.log(`Name updated: ${updatedName}`);
@@ -137,61 +164,65 @@ export const updateCrud = (function() {
                 /* If name already exists in names table */
                 /* If name_id is not unique in people table (count of name_id
             is > 1), update name_id in people table to name_id of (new) name */
-            } else if (IDcounts.nameIDcount > 1) {
+            } else if (idCounts.nameIdCount > 1) {
                 console.log("--- Name is not unique ---");
-                let updatedNameID = await updateColumnV2(
-                    "people",
-                    "name_id",
-                    "name_id",
-                    "names",
-                    "name",
-                    "person_id",
+                let updatedNameId = await updateColumnReturningId(
+                    client,
+                    peopleTable().peopleTableName,
+                    peopleTable().nameIdColumn,
+                    namesTable().nameIdColumn,
+                    namesTable().namesTableName,
+                    namesTable().nameColumn,
+                    peopleTable().personIdColumn,
                     name,
                     person_id,
                 );
-                updatedNameID = updatedNameID.name_id;
-                console.log(`updatedNameID: ${updatedNameID}`);
+                updatedNameId = updatedNameId.name_id;
+                console.log(`updatedNameId: ${updatedNameId}`);
 
                 /* If name_id count is unique in people table (count of name_id
             is <= 1), and new name is not the same as old name, update 
             name_id in people table to name_id of (new) name */
-            } else if (IDcounts.nameIDcount <= 1 && name !== nameToChange) {
+            } else if (idCounts.nameIdCount <= 1 && name !== nameToChange) {
                 console.log("--- Name is unique ---");
-                let updatedNameID = await updateColumnV2(
-                    "people",
-                    "name_id",
-                    "name_id",
-                    "names",
-                    "name",
-                    "person_id",
+                let updatedNameId = await updateColumnReturningId(
+                    client,
+                    peopleTable().peopleTableName,
+                    peopleTable().nameIdColumn,
+                    namesTable().nameIdColumn,
+                    namesTable().namesTableName,
+                    namesTable().nameColumn,
+                    peopleTable().personIdColumn,
                     name,
                     person_id,
                 );
-                updatedNameID = updatedNameID.name_id;
-                console.log(`updatedNameID: ${updatedNameID}`);
+                updatedNameId = updatedNameId.name_id;
+                console.log(`updatedNameId: ${updatedNameId}`);
 
                 /* Delete row in names table where name is old name (name that
             was updated) */
-                let deletedNameID = await deleteRow(
-                    "names",
-                    "name_id",
-                    "name_id",
-                    nameID,
+                let deletedNameId = await deleteRowReturningId(
+                    client,
+                    namesTable().namesTableName,
+                    namesTable().nameIdColumn,
+                    namesTable().nameIdColumn,
+                    ids.name_id,
                 );
-                deletedNameID = deletedNameID.name_id;
-                console.log(`deletedNameID: ${deletedNameID}`);
+                deletedNameId = deletedNameId.name_id;
+                console.log(`deletedNameId: ${deletedNameId}`);
             }
 
             /* If experience doesn't already exist in experience table, update
         experience table */
             if (counts.experienceCount === 0) {
                 console.log("--- New experience ---");
-                let updatedExperience = await updateColumn(
-                    "experience",
-                    "experience",
-                    "experience_id",
+                let updatedExperience = await updateColumnReturningValue(
+                    client,
+                    experienceTable().experienceTableName,
+                    experienceTable().experienceColumn,
+                    experienceTable().experienceIdColumn,
                     experience,
-                    experienceID,
+                    ids.experience_id,
                 );
                 updatedExperience = updatedExperience.experience;
                 console.log(`Experience updated: ${updatedExperience}`);
@@ -200,65 +231,69 @@ export const updateCrud = (function() {
                 /* If experience_id is not unique in people table (count of
             experience_id is > 1), update experience_id in people table to
             experience_id of (new) experience */
-            } else if (IDcounts.experienceIDcount > 1) {
+            } else if (idCounts.experienceIdCount > 1) {
                 console.log("--- Experience is not unique ---");
-                let updatedExperienceID = await updateColumnV2(
-                    "people",
-                    "experience_id",
-                    "experience_id",
-                    "experience",
-                    "experience",
-                    "person_id",
+                let updatedExperienceId = await updateColumnReturningId(
+                    client,
+                    peopleTable().peopleTableName,
+                    peopleTable().experienceIdColumn,
+                    experienceTable().experienceIdColumn,
+                    experienceTable().experienceTableName,
+                    experienceTable().experienceColumn,
+                    peopleTable().personIdColumn,
                     experience,
                     person_id,
                 );
-                updatedExperienceID = updatedExperienceID.experience_id;
-                console.log(`updatedExperienceID: ${updatedExperienceID}`);
+                updatedExperienceId = updatedExperienceId.experience_id;
+                console.log(`updatedExperienceId: ${updatedExperienceId}`);
 
                 /* If experience_id count is unique in people table (count of
             experience_id is <= 1), and new experience is not the same as old
             experience, update experience_id in people table to experience_id
             of (new) experience */
             } else if (
-                IDcounts.experienceIDcount <= 1 &&
+                idCounts.experienceIdCount <= 1 &&
                 experience !== experienceToChange
             ) {
                 console.log("--- Experience is unique ---");
-                let updatedExperienceID = await updateColumnV2(
-                    "people",
-                    "experience_id",
-                    "experience_id",
-                    "experience",
-                    "experience",
-                    "person_id",
+                let updatedExperienceId = await updateColumnReturningId(
+                    client,
+                    peopleTable().peopleTableName,
+                    peopleTable().experienceIdColumn,
+                    experienceTable().experienceIdColumn,
+                    experienceTable().experienceTableName,
+                    experienceTable().experienceColumn,
+                    peopleTable().personIdColumn,
                     experience,
                     person_id,
                 );
-                updatedExperienceID = updatedExperienceID.experience_id;
-                console.log(`updatedExperienceID: ${updatedExperienceID}`);
+                updatedExperienceId = updatedExperienceId.experience_id;
+                console.log(`updatedExperienceId: ${updatedExperienceId}`);
 
                 /* Delete row in experience table where experience is old
             experience (experience that was updated) */
-                let deletedExperienceID = await deleteRow(
-                    "experience",
-                    "experience_id",
-                    "experience_id",
-                    experienceID,
+                let deletedExperienceId = await deleteRowReturningId(
+                    client,
+                    experienceTable().experienceTableName,
+                    experienceTable().experienceIdColumn,
+                    experienceTable().experienceIdColumn,
+                    ids.experience_id,
                 );
-                deletedExperienceID = deletedExperienceID.experience_id;
-                console.log(`deletedExperienceID: ${deletedExperienceID}`);
+                deletedExperienceId = deletedExperienceId.experience_id;
+                console.log(`deletedExperienceId: ${deletedExperienceId}`);
             }
 
             /* If salary doesn't already exist in salaries table, update
         salaries table */
             if (counts.salaryCount === 0) {
                 console.log("--- New salary ---");
-                let updatedSalary = await updateColumn(
-                    "salaries",
-                    "salary",
-                    "salary_id",
+                let updatedSalary = await updateColumnReturningValue(
+                    client,
+                    salariesTable().salariesTableName,
+                    salariesTable().salaryColumn,
+                    salariesTable().salaryIdColumn,
                     salary,
-                    salaryID,
+                    ids.salary_id,
                 );
                 updatedSalary = updatedSalary.salary;
                 console.log(`Salary updated: ${updatedSalary}`);
@@ -266,52 +301,55 @@ export const updateCrud = (function() {
                 /* If salary_id is not unique in people table (count of salary_id
             is > 1), update salary_id in people table to salary_id of (new)
             salary */
-            } else if (IDcounts.salaryIDcount > 1) {
+            } else if (idCounts.salaryIdCount > 1) {
                 console.log("--- Salary is not unique ---");
-                let updatedSalaryID = await updateColumnV2(
-                    "people",
-                    "salary_id",
-                    "salary_id",
-                    "salaries",
-                    "salary",
-                    "person_id",
+                let updatedSalaryId = await updateColumnReturningId(
+                    client,
+                    peopleTable().peopleTableName,
+                    peopleTable().salaryIdColumn,
+                    salariesTable().salaryIdColumn,
+                    salariesTable().salariesTableName,
+                    salariesTable().salaryColumn,
+                    peopleTable().personIdColumn,
                     salary,
                     person_id,
                 );
-                updatedSalaryID = updatedSalaryID.salary_id;
-                console.log(`updatedSalaryID: ${updatedSalaryID}`);
+                updatedSalaryId = updatedSalaryId.salary_id;
+                console.log(`updatedSalaryId: ${updatedSalaryId}`);
 
                 /* If salary_id count is unique in people table (count of
             salary_id is <= 1), and new salary is not the same as old salary,
             update salary_id in people table to salary_id of (new) salary */
             } else if (
-                IDcounts.salaryIDcount <= 1 &&
+                idCounts.salaryIdCount <= 1 &&
                 salary !== salaryToChange
             ) {
                 console.log("--- Salary is unique ---");
-                let updatedSalaryID = await updateColumnV2(
-                    "people",
-                    "salary_id",
-                    "salary_id",
-                    "salaries",
-                    "salary",
-                    "person_id",
+                let updatedSalaryId = await updateColumnReturningId(
+                    client,
+                    peopleTable().peopleTableName,
+                    peopleTable().salaryIdColumn,
+                    salariesTable().salaryIdColumn,
+                    salariesTable().salariesTableName,
+                    salariesTable().salaryColumn,
+                    peopleTable().personIdColumn,
                     salary,
                     person_id,
                 );
-                updatedSalaryID = updatedSalaryID.salary_id;
-                console.log(`updatedSalaryID: ${updatedSalaryID}`);
+                updatedSalaryId = updatedSalaryId.salary_id;
+                console.log(`updatedSalaryId: ${updatedSalaryId}`);
 
                 /* Delete row in salaries table where salary is old salary
             (salary that was updated) */
-                let deletedSalaryID = await deleteRow(
-                    "salaries",
-                    "salary_id",
-                    "salary_id",
-                    salaryID,
+                let deletedSalaryId = await deleteRowReturningId(
+                    client,
+                    salariesTable().salariesTableName,
+                    salariesTable().salaryIdColumn,
+                    salariesTable().salaryIdColumn,
+                    ids.salary_id,
                 );
-                deletedSalaryID = deletedSalaryID.salary_id;
-                console.log(`deletedSalaryID: ${deletedSalaryID}`);
+                deletedSalaryId = deletedSalaryId.salary_id;
+                console.log(`deletedSalaryId: ${deletedSalaryId}`);
             }
 
             await client.query("COMMIT;");
@@ -322,7 +360,8 @@ export const updateCrud = (function() {
             await client.query("ROLLBACK;");
             console.log("ROLLBACK terminates transaction block");
         } finally {
-            console.log("Waiting for transaction...");
+            console.log("Client released");
+            client.release();
         }
     };
 

@@ -52,9 +52,35 @@ export const readCrudUtility = (function() {
         return result.rows[0];
     };
 
+    const getSpecificValueInRow = async function(
+        client,
+        columnName1,
+        tableName1,
+        columnName2,
+        tableName2,
+        columnName3,
+        value,
+    ) {
+        const result = await client.query(
+            `
+            SELECT ${columnName1}
+            FROM ${tableName1}
+            WHERE ${columnName2} = (
+                SELECT ${columnName2}
+                FROM ${tableName2}
+                WHERE ${columnName3} = $1
+            );
+            `,
+            [value],
+        );
+
+        return result.rows[0];
+    };
+
     return {
         getAverageColumnValue: getAverageColumnValue,
         getAllValuesInRow: getAllValuesInRow,
         getCountOfColumnValue: getCountOfColumnValue,
+        getSpecificValueInRow: getSpecificValueInRow,
     };
 })();
