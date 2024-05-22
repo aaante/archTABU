@@ -1,44 +1,35 @@
 import express from "express";
 import { get } from "./routes/get.js";
 import { createCrud } from "./models/createCrud.js";
-import { readCrud } from "./models/readCrud.js";
+// import { readCrud } from "./models/readCrud.js";
 import { updateCrud } from "./models/updateCrud.js";
 import { deleteCrud } from "./models/deleteCrud.js";
 
 const app = express();
 const port = 3000;
 const __dirname = import.meta.dirname;
-const { index } = get;
+const { index, averageSalary } = get;
 
 const { insertUserData } = createCrud;
-const { getAverageSalary } = readCrud;
+// const { getAverageSalary } = readCrud;
 const { updateUserData } = updateCrud;
 const { deleteUserData } = deleteCrud;
 
+// Middleware
+app.use(express.static(__dirname + "/static"));
 app.use(express.json());
 
 // API endpoint: Serving 'index.html'
 app.use("/index", index);
-app.use(express.static(__dirname + "/static"));
 
 // API endpoint: Get average salary
+app.use("/", averageSalary);
 
 // API endpoint: Insert user data
 
 // API endpoint: Update user data
 
 // API endpoint: Delete user data
-
-app.get("/", async (req, res) => {
-    let avg;
-    try {
-        avg = await getAverageSalary();
-    } catch (error) {
-        console.error(error);
-    } finally {
-        res.send(`Average salary: ${avg}`);
-    }
-});
 
 app.post("/", async (req, res) => {
     try {
