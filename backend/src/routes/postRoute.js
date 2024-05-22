@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { createCrud } from "../models/createCrud.js";
 
-export const post = (function() {
-    const insert = Router();
+export const postRoute = (function() {
+    const insertData = Router();
     const { insertUserData } = createCrud;
 
-    insert.post("/", async (req, res) => {
+    insertData.post("/", async (req, res) => {
         try {
             await insertUserData(
                 req.body.name,
@@ -19,5 +19,5 @@ export const post = (function() {
         }
     });
 
-    return { insert };
+    return { insertData };
 })();

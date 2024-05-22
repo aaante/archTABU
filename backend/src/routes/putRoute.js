@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { updateCrud } from "../models/updateCrud.js";
 
-export const put = (function() {
-    const update = Router();
+export const putRoute = (function() {
+    const updateData = Router();
     const { updateUserData } = updateCrud;
 
-    update.put("/", async (req, res) => {
+    updateData.put("/", async (req, res) => {
         try {
             await updateUserData(
                 parseInt(req.body.id),
@@ -20,5 +20,5 @@ export const put = (function() {
         }
     });
 
-    return { update };
+    return { updateData };
 })();
