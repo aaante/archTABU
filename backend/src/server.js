@@ -1,23 +1,44 @@
 import express from "express";
+import { get } from "./routes/get.js";
+import { createCrud } from "./models/createCrud.js";
+import { readCrud } from "./models/readCrud.js";
+import { updateCrud } from "./models/updateCrud.js";
+import { deleteCrud } from "./models/deleteCrud.js";
+
 const app = express();
 const port = 3000;
 const __dirname = import.meta.dirname;
+const { index } = get;
 
-import { createCrud } from "./models/createCrud.js";
 const { insertUserData } = createCrud;
-import { readCrud } from "./models/readCrud.js";
 const { getAverageSalary } = readCrud;
-import { updateCrud } from "./models/updateCrud.js";
 const { updateUserData } = updateCrud;
-import { deleteCrud } from "./models/deleteCrud.js";
 const { deleteUserData } = deleteCrud;
 
-// app.use(express.static(__dirname + "/static"));
 app.use(express.json());
 
-// app.get("/index", (req, res) => {
-//     res.sendFile(__dirname + "/public/index.html");
-// });
+// API endpoint: Serving 'index.html'
+app.use("/index", index);
+app.use(express.static(__dirname + "/static"));
+
+// API endpoint: Get average salary
+
+// API endpoint: Insert user data
+
+// API endpoint: Update user data
+
+// API endpoint: Delete user data
+
+app.get("/", async (req, res) => {
+    let avg;
+    try {
+        avg = await getAverageSalary();
+    } catch (error) {
+        console.error(error);
+    } finally {
+        res.send(`Average salary: ${avg}`);
+    }
+});
 
 app.post("/", async (req, res) => {
     try {
@@ -32,17 +53,6 @@ app.post("/", async (req, res) => {
         res.send(`Architect inserted into database!`);
     }
 });
-
-// app.get("/", async (req, res) => {
-//     let avg;
-//     try {
-//         avg = await getAverageSalary();
-//     } catch (error) {
-//         console.error(error);
-//     } finally {
-//         res.send(`Average salary: ${avg}`);
-//     }
-// });
 
 app.put("/", async (req, res) => {
     try {
