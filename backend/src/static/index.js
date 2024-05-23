@@ -17,7 +17,7 @@ post.addEventListener("submit", async (event) => {
     try {
         const h2newInsert = document.getElementById("new-insert");
         const jsonRequest = handleSubmit(event);
-        const result = await fetch("http://localhost:3000/", {
+        const result = await fetch("http://localhost:3001/", {
             method: "POST",
             headers: { "content-type": "application/json" },
             body: JSON.stringify(jsonRequest),
@@ -32,7 +32,7 @@ post.addEventListener("submit", async (event) => {
 get.addEventListener("click", async () => {
     try {
         const h2avgSalary = document.getElementById("avg-salary");
-        const result = await fetch("http://localhost:3000/", { method: "GET" });
+        const result = await fetch(`http://localhost:3001/`, { method: "GET" });
         const avgSalary = await result.text();
         h2avgSalary.innerHTML = avgSalary;
     } catch (error) {
@@ -45,7 +45,7 @@ update.addEventListener("submit", async (event) => {
     try {
         const h2newUpdate = document.getElementById("new-update");
         const jsonRequest = handleSubmit(event);
-        const result = await fetch("http://localhost:3000/", {
+        const result = await fetch("http://localhost:3001/", {
             method: "PUT",
             headers: { "content-type": "application/json" },
             body: JSON.stringify(jsonRequest),
@@ -61,7 +61,7 @@ del.addEventListener("submit", async (event) => {
     try {
         const h2newDelete = document.getElementById("new-delete");
         const jsonRequest = handleSubmit(event);
-        const result = await fetch("http://localhost:3000/", {
+        const result = await fetch("http://localhost:3001/", {
             method: "DELETE",
             headers: { "content-type": "application/json" },
             body: JSON.stringify(jsonRequest),

@@ -4,9 +4,9 @@ import { postRoute } from "./routes/postRoute.js";
 import { putRoute } from "./routes/putRoute.js";
 import { deleteRoute } from "./routes/deleteRoute.js";
 
-export const server = (function() {
+export const server = (function () {
     const app = express();
-    const port = 3000;
+    const port = 3001;
     const __dirname = import.meta.dirname;
     const { index, averageSalary } = getRoute;
     const { insertData } = postRoute;
@@ -27,4 +27,6 @@ export const server = (function() {
     app.use("/", insertData);
     app.use("/", updateData);
     app.use("/", deleteData);
+
+    return { port };
 })();
