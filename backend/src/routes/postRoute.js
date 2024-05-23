@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createCrud } from "../models/createCrud.js";
+import { createCrud } from "../db/crudFunctions/createCrud.js";
 
 export const postRoute = (function() {
     const insertData = Router();

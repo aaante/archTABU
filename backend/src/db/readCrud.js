@@ -1,8 +1,8 @@
-import { POOL_CONFIG } from "../configs/poolConfig.js";
+import { POOL_CONFIG } from "../config/poolConfig.js";
 const { pool } = POOL_CONFIG;
-import { MODEL } from "./model.js";
+import { MODEL } from "../model.js";
 const { salariesTable } = MODEL;
-import { readCrudUtility } from "./readCrudUtility.js";
+import { readCrudUtility } from "../readCrudUtility.js";
 const { getAverageColumnValue } = readCrudUtility;
 
 export const readCrud = (function() {

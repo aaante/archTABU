@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteCrud } from "../models/deleteCrud.js";
+import { deleteCrud } from "../db/crudFunctions/deleteCrud.js";
 
 export const deleteRoute = (function() {
     const deleteData = Router();

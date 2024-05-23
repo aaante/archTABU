@@ -1,8 +1,8 @@
-import { POOL_CONFIG } from "../configs/poolConfig.js";
+import { POOL_CONFIG } from "../config/poolConfig.js";
 const { pool } = POOL_CONFIG;
-import { MODEL } from "./model.js";
+import { MODEL } from "../model.js";
 const { namesTable, experienceTable, salariesTable, peopleTable } = MODEL;
-import { createCrudUtility } from "./createCrudUtility.js";
+import { createCrudUtility } from "./crudUtilityFunctions/createCrudUtility.js";
 const { insertRowOnConflictReturningId, insertRow } = createCrudUtility;
 
 export const createCrud = (function() {

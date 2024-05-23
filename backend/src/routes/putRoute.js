@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { updateCrud } from "../models/updateCrud.js";
+import { updateCrud } from "../db/crudFunctions/updateCrud.js";
 
 export const putRoute = (function() {
     const updateData = Router();

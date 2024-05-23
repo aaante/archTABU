@@ -1,14 +1,14 @@
-import { POOL_CONFIG } from "../configs/poolConfig.js";
+import { POOL_CONFIG } from "../config/poolConfig.js";
 const { pool } = POOL_CONFIG;
-import { MODEL } from "./model.js";
+import { MODEL } from "../model.js";
 const { namesTable, experienceTable, salariesTable, peopleTable } = MODEL;
-import { readCrudUtility } from "./readCrudUtility.js";
+import { readCrudUtility } from "./crudUtilityFunctions/readCrudUtility.js";
 const { getSpecificValueInRow, getAllValuesInRow, getCountOfColumnValue } =
     readCrudUtility;
-import { updateCrudUtility } from "./updateCrudUtility.js";
+import { updateCrudUtility } from "./crudUtilityFunctions/updateCrudUtility.js";
 const { updateColumnReturningValue, updateColumnReturningId } =
     updateCrudUtility;
-import { deleteCrudUtility } from "./deleteCrudUtility.js";
+import { deleteCrudUtility } from "./crudUtilityFunctions/deleteCrudUtility.js";
 const { deleteRowReturningId } = deleteCrudUtility;
 
 export const updateCrud = (function() {

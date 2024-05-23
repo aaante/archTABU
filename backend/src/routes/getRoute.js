@@ -1,6 +1,6 @@
 import { Router } from "express";
 import path from "node:path";
-import { readCrud } from "../models/readCrud.js";
+import { readCrud } from "../db/crudFunctions/readCrud.js";
 
 export const getRoute = (function() {
     const __dirname = import.meta.dirname;
