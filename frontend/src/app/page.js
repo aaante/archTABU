@@ -1,9 +1,10 @@
-import Button from "./Button";
+import AverageSalary from "./Get";
 
-export default async function Home() {
+export default async function Page() {
     return (
         <>
-            <Button />
+            <h1>archTABU 🏛️</h1>
+            <AverageSalary />
         </>
     );
 }
