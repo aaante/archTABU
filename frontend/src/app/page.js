@@ -1,10 +1,14 @@
-import AverageSalary from "./Get";
+import { getAverageSalary } from "./getAverageSalary";
+import Get from "./Get";
 
 export default async function Page() {
+    const averageSalary = await getAverageSalary();
+
     return (
         <>
             <h1>archTABU 🏛️</h1>
-            <AverageSalary />
+
+            <Get data={averageSalary} />
         </>
     );
 }

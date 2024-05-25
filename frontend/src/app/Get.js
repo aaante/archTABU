@@ -1,14 +1,24 @@
-import { getAverageSalary } from "./getAverageSalary";
-import AverageSalary from "./AverageSalary";
-import Button from "./Button";
+"use client";
 
-export default async function Get() {
-    const averageSalary = await getAverageSalary();
+import { useState, useEffect } from "react";
+
+export default function Get({ data }) {
+    const [toggleShowData, setShowData] = useState(false);
+
+    useEffect(() => {
+        console.log(toggleShowData);
+    }, [toggleShowData]);
+
+    function handleClick() {
+        setShowData(true);
+    }
 
     return (
         <>
-            <Button />
-            <AverageSalary data={averageSalary} />
+            <button onClick={handleClick}>GET average salary</button>
+
+            {/* Conditionally show this element */}
+            {toggleShowData > 0 ?? <h2>{data}</h2>}
         </>
     );
 }
