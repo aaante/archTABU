@@ -1,24 +1,27 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { GET } from "./api/route";
 
-export default function Get({ data }) {
-    const [toggleShowData, setShowData] = useState(false);
+export default function Get() {
+    const [averageSalary, setAverageSalary] = useState(null);
+
+    async function getAverageSalary() {
+        const result = await GET();
+
+        console.log(typeof result);
+        console.log(result);
+
+        setAverageSalary(result);
+    }
 
     useEffect(() => {
-        console.log(toggleShowData);
-    }, [toggleShowData]);
-
-    function handleClick() {
-        setShowData(true);
-    }
+        getAverageSalary();
+    }, []);
 
     return (
         <>
-            <button onClick={handleClick}>GET average salary</button>
-
-            {/* Conditionally show this element */}
-            {toggleShowData > 0 ?? <h2>{data}</h2>}
+            <h1>Average salary: {averageSalary}</h1>
         </>
     );
 }

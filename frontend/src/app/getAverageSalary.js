@@ -1,7 +1,5 @@
-import "server-only";
-
 export async function getAverageSalary() {
-    const res = await fetch(`http://localhost:3001/`);
+    const res = await fetch(`http://localhost:3001/`, {mode: "no-cors"});
 
     return res.text();
 }

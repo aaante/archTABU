@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { getRoute } from "./routes/getRoute.js";
 import { postRoute } from "./routes/postRoute.js";
 import { putRoute } from "./routes/putRoute.js";
@@ -18,6 +19,7 @@ export const server = (function () {
     });
 
     // Middleware
+    app.use(cors());
     app.use(express.static(__dirname + "/static"));
     app.use(express.json());
 
