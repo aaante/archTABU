@@ -1,23 +1,24 @@
 import pg from "pg";
+import "dotenv/config";
 const { Pool } = pg;
 
 export const POOL_CONFIG = (function() {
-    const _poolData = {
-        user: "antesusic",
-        password: "postgres",
-        host: "127.0.0.1",
-        port: 5432,
-        database: "archtabu",
+    const poolData = {
+        user: process.env.POSTGRESQL_USER,
+        password: process.env.POSTGRESQL_PASSWORD,
+        host: process.env.POSTGRESQL_HOST,
+        port: process.env.POSTGRESQL_PORT,
+        database: process.env.POSTGRESQL_DATABASE,
         max: 10,
         connectionTimeoutMillis: 0,
         idleTimeoutMillis: 0,
     };
 
-    const _pool = new Pool(_poolData);
+    const pool = new Pool(poolData);
 
     const getPool = function() {
-        return _pool;
-    }
+        return pool;
+    };
 
     return { pool: getPool };
 })();

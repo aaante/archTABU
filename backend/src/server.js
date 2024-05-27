@@ -1,13 +1,14 @@
 import express from "express";
+import "dotenv/config";
 import cors from "cors";
 import { getRoute } from "./routes/getRoute.js";
 import { postRoute } from "./routes/postRoute.js";
 import { putRoute } from "./routes/putRoute.js";
 import { deleteRoute } from "./routes/deleteRoute.js";
 
-export const server = (function () {
+export const server = (function() {
     const app = express();
-    const port = 3001;
+    const port = process.env.EXPRESS_PORT;
     const { index, averageSalary } = getRoute;
     const { insertData } = postRoute;
     const { updateData } = putRoute;
@@ -27,6 +28,4 @@ export const server = (function () {
     app.use("/", insertData);
     app.use("/", updateData);
     app.use("/", deleteData);
-
-    return { port };
 })();
