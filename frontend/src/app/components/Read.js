@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { GET } from "./api/route";
+import { GET } from "../api/route";
 
-export default function Get() {
+export default function Read() {
     const [averageSalary, setAverageSalary] = useState(null);
     const [showChild, setShowChild] = useState(false);
 
@@ -18,10 +18,10 @@ export default function Get() {
     }
 
     return (
-        <>
+        <div>
             <button onClick={handleClick}>GET average salary</button>
 
             {showChild && <h2>{averageSalary}</h2>}
-        </>
+        </div>
     );
 }
