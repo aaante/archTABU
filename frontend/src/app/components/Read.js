@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { GET } from "../api/route";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 export default function Read() {
     const [averageSalary, setAverageSalary] = useState(null);
@@ -15,9 +17,11 @@ export default function Read() {
 
     return (
         <div>
-            <form action={getAverageSalary}>
-                <input type="submit" value="GET average salary" />
-            </form>
+            <Form action={getAverageSalary}>
+                <Button variant="primary" type="submit">
+                    READ average salary
+                </Button>
+            </Form>
 
             {showChild && <h2>{averageSalary}</h2>}
         </div>

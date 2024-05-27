@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { PUT } from "../api/route";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 export default function Update() {
     const [message, setMessage] = useState(null);
@@ -16,39 +18,45 @@ export default function Update() {
 
     return (
         <div>
-            <form action={putData}>
-                <input
-                    type="number"
-                    name="id"
-                    defaultValue={""}
-                    placeholder="id"
-                />
-                <br />
-                <input
-                    type="text"
-                    name="name"
-                    defaultValue={""}
-                    placeholder="name"
-                />
-                <br />
-                <input
-                    type="number"
-                    name="experience"
-                    defaultValue={""}
-                    placeholder="experience"
-                />
-                <br />
-                <input
-                    type="number"
-                    name="salary"
-                    defaultValue={""}
-                    placeholder="salary"
-                />
-                <br />
-                <input type="submit" value="UPDATE data" />
+            <Form action={putData}>
+                <Form.Group className="mb-3">
+                    <Form.Control
+                        type="number"
+                        name="id"
+                        defaultValue={""}
+                        placeholder="Enter id"
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Control
+                        type="text"
+                        name="name"
+                        defaultValue={""}
+                        placeholder="Enter name"
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Control
+                        type="number"
+                        name="experience"
+                        defaultValue={""}
+                        placeholder="Enter experience"
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Control
+                        type="number"
+                        name="salary"
+                        defaultValue={""}
+                        placeholder="Enter salary"
+                    />
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                    UPDATE data
+                </Button>
+            </Form>
 
-                {showChild && <h2>{message}</h2>}
-            </form>
+            {showChild && <h2>{message}</h2>}
         </div>
     );
 }

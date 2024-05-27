@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { DELETE } from "../api/route";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 export default function Delete() {
     const [message, setMessage] = useState(null);
@@ -16,18 +18,21 @@ export default function Delete() {
 
     return (
         <div>
-            <form action={deleteData}>
-                <input
-                    type="number"
-                    name="id"
-                    defaultValue={""}
-                    placeholder="id"
-                />
-                <br />
-                <input type="submit" value="DELETE data" />
+            <Form action={deleteData}>
+                <Form.Group className="mb-3">
+                    <Form.Control
+                        type="number"
+                        name="id"
+                        defaultValue={""}
+                        placeholder="Enter id"
+                    />
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                    DELETE data
+                </Button>
+            </Form>
 
-                {showChild && <h2>{message}</h2>}
-            </form>
+            {showChild && <h2>{message}</h2>}
         </div>
     );
 }
