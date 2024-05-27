@@ -1,27 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { GET } from "./api/route";
 
 export default function Get() {
     const [averageSalary, setAverageSalary] = useState(null);
+    const [showChild, setShowChild] = useState(false);
 
     async function getAverageSalary() {
         const result = await GET();
-
-        console.log(typeof result);
-        console.log(result);
-
         setAverageSalary(result);
     }
 
-    useEffect(() => {
-        getAverageSalary();
-    }, []);
+    async function handleClick() {
+        await getAverageSalary();
+        setShowChild(true);
+    }
 
     return (
         <>
-            <h1>Average salary: {averageSalary}</h1>
+            <button onClick={handleClick}>GET average salary</button>
+
+            {showChild && <h2>{averageSalary}</h2>}
         </>
     );
 }
