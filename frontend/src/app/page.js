@@ -1,5 +1,7 @@
 import Get from "./Get";
 import Post from "./Post";
+import Put from "./Put";
+import Delete from "./Delete";
 
 export default async function Page() {
     return (
@@ -9,6 +11,10 @@ export default async function Page() {
             <Post />
 
             <Get />
+
+            <Put />
+
+            <Delete />
         </>
     );
 }
