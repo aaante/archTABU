@@ -10,16 +10,14 @@ export default function Read() {
     async function getAverageSalary() {
         const result = await GET();
         setAverageSalary(result);
-    }
-
-    async function handleClick() {
-        await getAverageSalary();
         setShowChild(true);
     }
 
     return (
         <div>
-            <button onClick={handleClick}>GET average salary</button>
+            <form action={getAverageSalary}>
+                <input type="submit" value="GET average salary" />
+            </form>
 
             {showChild && <h2>{averageSalary}</h2>}
         </div>
