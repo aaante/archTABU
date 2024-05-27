@@ -8,7 +8,6 @@ import { deleteRoute } from "./routes/deleteRoute.js";
 export const server = (function () {
     const app = express();
     const port = 3001;
-    const __dirname = import.meta.dirname;
     const { index, averageSalary } = getRoute;
     const { insertData } = postRoute;
     const { updateData } = putRoute;
@@ -20,7 +19,6 @@ export const server = (function () {
 
     // Middleware
     app.use(cors());
-    app.use(express.static(__dirname + "/static"));
     app.use(express.json());
 
     // API endpoints
