@@ -4,6 +4,7 @@ import { useState } from "react";
 import { GET } from "../api/route";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
 
 export default function Read() {
     const [averageSalary, setAverageSalary] = useState(null);
@@ -16,14 +17,14 @@ export default function Read() {
     }
 
     return (
-        <div>
-            <Form action={getAverageSalary}>
+        <Container className="mb-5">
+            <Form className="mb-2" action={getAverageSalary}>
                 <Button variant="primary" type="submit">
                     READ average salary
                 </Button>
             </Form>
 
-            {showChild && <h2>{averageSalary}</h2>}
-        </div>
+            {showChild && <p>{averageSalary}</p>}
+        </Container>
     );
 }

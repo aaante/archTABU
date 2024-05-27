@@ -4,6 +4,7 @@ import { useState } from "react";
 import { DELETE } from "../api/route";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
 
 export default function Delete() {
     const [message, setMessage] = useState(null);
@@ -17,8 +18,8 @@ export default function Delete() {
     }
 
     return (
-        <div>
-            <Form action={deleteData}>
+        <Container className="mb-5">
+            <Form className="mb-2" action={deleteData}>
                 <Form.Group className="mb-3">
                     <Form.Control
                         type="number"
@@ -32,7 +33,7 @@ export default function Delete() {
                 </Button>
             </Form>
 
-            {showChild && <h2>{message}</h2>}
-        </div>
+            {showChild && <p>{message}</p>}
+        </Container>
     );
 }
