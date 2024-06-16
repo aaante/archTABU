@@ -1,4 +1,5 @@
 services:
+  # database:
   backend:
     build: ./backend
     ports:
@@ -25,6 +26,5 @@ services:
             - node_modules/
         - action: rebuild
           path: ./frontend/package.json
-      depends on:
-        - frontend
-
+    depends_on:
+      - backend
