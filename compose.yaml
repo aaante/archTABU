@@ -1,4 +1,17 @@
 services:
+  backend:
+    build: ./backend
+    ports:
+      - "3001:3001"
+    develop:
+      watch:
+        - action: sync
+          path: ./backend
+          target: /app/backend
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./backend/package.json
   frontend:
     build: ./frontend
     ports:
@@ -12,3 +25,6 @@ services:
             - node_modules/
         - action: rebuild
           path: ./frontend/package.json
+      depends on:
+        - frontend
+
