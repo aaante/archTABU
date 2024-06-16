@@ -1,5 +1,17 @@
 services:
-  # database:
+
+  database:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: archtabu
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./database:/var/lib/postgresql/data
+
   backend:
     build: ./backend
     env_file: "./backend/.env"
@@ -12,6 +24,9 @@ services:
           target: /app/backend
         - action: rebuild
           path: ./backend/package.json
+    depends_on:
+      - database
+
   frontend:
     build: ./frontend
     env_file: "./frontend/.env"
