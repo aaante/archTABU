@@ -4,4 +4,4 @@ COPY package* .
 RUN npm install
 COPY . .
 CMD ["npm", "test"]
-EXPOSE 3001
+EXPOSE 4000
