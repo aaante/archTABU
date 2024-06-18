@@ -8,9 +8,9 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: archtabu
     ports:
-      - "5000:5000"
+      - "6000:5432"
     volumes:
-      - ./database:/var/lib/postgresql/data
+      - archtabu:/var/lib/postgresql/data
 
   backend:
     build: ./backend
@@ -41,3 +41,6 @@ services:
           path: ./frontend/package.json
     depends_on:
       - backend
+
+volumes:
+  archtabu: 
