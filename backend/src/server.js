@@ -7,7 +7,7 @@ import { putRoute } from "./routes/putRoute.js";
 import { deleteRoute } from "./routes/deleteRoute.js";
 import { dbInit } from "./db/dbInit.js";
 
-export const server = (async function() {
+export const server = (function() {
     const app = express();
     const port = process.env.EXPRESS_PORT;
     const { init } = dbInit;
@@ -16,14 +16,17 @@ export const server = (async function() {
     const { updateData } = putRoute;
     const { deleteData } = deleteRoute;
 
-    try {
-        await init();
-    } catch (ex) {
-        throw ex;
-    }
-    app.listen(port, () => {
-        console.log(`App listening on: http://localhost:${port}`);
+    // This is not working
+    init().then(() => {
+        app.listen(port, () => {
+            console.log(`App listening on: http://localhost:${port}`);
+        });
     });
+
+    // // This is working?
+    // app.listen(port, () => {
+    //     console.log(`App listening on: http://localhost:${port}`);
+    // });
 
     // Middleware
     app.use(cors());

@@ -1,4 +1,4 @@
-CREATE TABLE names (
+CREATE TABLE IF NOT EXISTS names (
     name_id INTEGER PRIMARY KEY,
-    name TEXT UNIQUE
+    name VARCHAR(255) UNIQUE
 );

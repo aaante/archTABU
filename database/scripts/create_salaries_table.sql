@@ -1,4 +1,4 @@
-CREATE TABLE salaries (
+CREATE TABLE IF NOT EXISTS salaries (
     salary_id INTEGER PRIMARY KEY,
     salary INTEGER UNIQUE
 );
