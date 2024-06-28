@@ -16,18 +16,6 @@ export const server = (function() {
     const { updateData } = putRoute;
     const { deleteData } = deleteRoute;
 
-    // This is not working
-    init().then(() => {
-        app.listen(port, () => {
-            console.log(`App listening on: http://localhost:${port}`);
-        });
-    });
-
-    // // This is working?
-    // app.listen(port, () => {
-    //     console.log(`App listening on: http://localhost:${port}`);
-    // });
-
     // Middleware
     app.use(cors());
     app.use(express.json());
@@ -38,4 +26,19 @@ export const server = (function() {
     app.use("/", insertData);
     app.use("/", updateData);
     app.use("/", deleteData);
+
+    const startServer = async function() {
+        try {
+            await init();
+            app.listen(port, () => {
+                console.log(`App listening on: http://localhost:${port}`);
+            });
+        } catch (error) {
+            console.error(error);
+        } finally {
+            console.log(`Database initialized`);
+        }
+    };
+
+    startServer();
 })();
