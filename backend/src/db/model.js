@@ -1,4 +1,4 @@
-export const MODEL = (function() {
+export const MODEL = (function () {
     const namesTable = {
         namesTableName: "names",
         nameIdColumn: "name_id",
@@ -25,21 +25,22 @@ export const MODEL = (function() {
         salaryIdColumn: "salary_id",
     };
 
-    const getNamesTable = function() {
+    const getNamesTable = function () {
         return namesTable;
     };
 
-    const getExperienceTable = function() {
+    const getExperienceTable = function () {
         return experienceTable;
     };
 
-    const getSalariesTable = function() {
+    const getSalariesTable = function () {
         return salariesTable;
     };
 
-    const getPeopleTable = function() {
+    const getPeopleTable = function () {
         return peopleTable;
     };
+
     return {
         namesTable: getNamesTable,
         experienceTable: getExperienceTable,

@@ -1,8 +1,8 @@
 import pg from "pg";
 import "dotenv/config";
-const { Pool } = pg;
 
-export const POOL_CONFIG = (function() {
+export const POOL_CONFIG = (function () {
+    const { Pool } = pg;
     const poolData = {
         user: process.env.POSTGRESQL_USER,
         password: process.env.POSTGRESQL_PASSWORD,
@@ -13,10 +13,9 @@ export const POOL_CONFIG = (function() {
         connectionTimeoutMillis: 0,
         idleTimeoutMillis: 0,
     };
-
     const pool = new Pool(poolData);
 
-    const getPool = function() {
+    const getPool = function () {
         return pool;
     };
 
