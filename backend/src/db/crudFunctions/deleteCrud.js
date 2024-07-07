@@ -1,14 +1,15 @@
 import { POOL_CONFIG } from "../config/poolConfig.js";
-const { pool } = POOL_CONFIG;
 import { MODEL } from "../model.js";
-const { namesTable, experienceTable, salariesTable, peopleTable } = MODEL;
 import { readCrudUtility } from "./crudUtilityFunctions/readCrudUtility.js";
-const { getAllValuesInRow, getCountOfColumnValue } = readCrudUtility;
 import { deleteCrudUtility } from "./crudUtilityFunctions/deleteCrudUtility.js";
+
+const { pool } = POOL_CONFIG;
+const { namesTable, experienceTable, salariesTable, peopleTable } = MODEL;
+const { getAllValuesInRow, getCountOfColumnValue } = readCrudUtility;
 const { deleteRowReturningId } = deleteCrudUtility;
 
-export const deleteCrud = (function() {
-    const deleteUserData = async function(person_id) {
+export const deleteCrud = (function () {
+    const deleteUserData = async function (person_id) {
         const client = await pool().connect();
 
         console.log(`Deleting person with person_id: ${person_id}`);

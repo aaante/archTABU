@@ -1,6 +1,6 @@
-export const createCrudUtility = (function() {
+export const createCrudUtility = (function () {
     // Query for MAX id number and return that id number + 1
-    async function generateId(client, idColumnName, tableName) {
+    const generateId = async function (client, idColumnName, tableName) {
         const maxId = await client.query(
             `SELECT MAX(${idColumnName}) FROM ${tableName};`,
         );
@@ -8,18 +8,18 @@ export const createCrudUtility = (function() {
         const returnedId = maxId.rows[0].max + 1;
 
         return returnedId;
-    }
+    };
 
     /*
         Tries INSERT: returns id ON CONFLICT
         (https://stackoverflow.com/a/62205017/21913412) 
     */
-    async function insertRowOnConflictReturningId(
+    const insertRowOnConflictReturningId = async function (
         client,
         tableName,
         idColumnName,
         columnName,
-        value
+        value,
     ) {
         const generatedId = await generateId(client, idColumnName, tableName);
 
@@ -41,9 +41,9 @@ export const createCrudUtility = (function() {
         );
 
         return returnedId.rows[0];
-    }
+    };
 
-    async function insertRow(
+    const insertRow = async function (
         client,
         idColumnName,
         tableName,
@@ -58,16 +58,11 @@ export const createCrudUtility = (function() {
             INSERT INTO ${tableName}
             VALUES ($1, $2, $3, $4);
             `,
-            [
-                generatedId,
-                value1,
-                value2,
-                value3,
-            ],
+            [generatedId, value1, value2, value3],
         );
 
         return;
-    }
+    };
 
     return {
         insertRowOnConflictReturningId: insertRowOnConflictReturningId,

@@ -1,18 +1,19 @@
 import { POOL_CONFIG } from "../config/poolConfig.js";
-const { pool } = POOL_CONFIG;
 import { MODEL } from "../model.js";
-const { namesTable, experienceTable, salariesTable, peopleTable } = MODEL;
 import { readCrudUtility } from "./crudUtilityFunctions/readCrudUtility.js";
+import { updateCrudUtility } from "./crudUtilityFunctions/updateCrudUtility.js";
+import { deleteCrudUtility } from "./crudUtilityFunctions/deleteCrudUtility.js";
+
+const { pool } = POOL_CONFIG;
+const { namesTable, experienceTable, salariesTable, peopleTable } = MODEL;
 const { getSpecificValueInRow, getAllValuesInRow, getCountOfColumnValue } =
     readCrudUtility;
-import { updateCrudUtility } from "./crudUtilityFunctions/updateCrudUtility.js";
 const { updateColumnReturningValue, updateColumnReturningId } =
     updateCrudUtility;
-import { deleteCrudUtility } from "./crudUtilityFunctions/deleteCrudUtility.js";
 const { deleteRowReturningId } = deleteCrudUtility;
 
-export const updateCrud = (function() {
-    const updateUserData = async function(
+export const updateCrud = (function () {
+    const updateUserData = async function (
         person_id,
         name,
         experience,

@@ -1,12 +1,13 @@
 import { POOL_CONFIG } from "../config/poolConfig.js";
-const { pool } = POOL_CONFIG;
 import { MODEL } from "../model.js";
-const { salariesTable } = MODEL;
 import { readCrudUtility } from "./crudUtilityFunctions/readCrudUtility.js";
+
+const { pool } = POOL_CONFIG;
+const { salariesTable } = MODEL;
 const { getAverageColumnValue } = readCrudUtility;
 
-export const readCrud = (function() {
-    const getAverageSalary = async function() {
+export const readCrud = (function () {
+    const getAverageSalary = async function () {
         const client = await pool().connect();
 
         try {

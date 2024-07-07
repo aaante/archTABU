@@ -2,6 +2,8 @@ import { POOL_CONFIG } from "./config/poolConfig.js";
 const { pool } = POOL_CONFIG;
 import { MODEL } from "./model.js";
 
+const { namesTable, experienceTable, salariesTable, peopleTable } = MODEL;
+
 export const dbInit = (function() {
     const init = async function() {
         const client = await pool().connect();
