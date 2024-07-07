@@ -4,8 +4,8 @@ import { MODEL } from "./model.js";
 
 const { namesTable, experienceTable, salariesTable, peopleTable } = MODEL;
 
-export const dbInit = (function() {
-    const init = async function() {
+export const dbInit = (function () {
+    const init = async function () {
         const client = await pool().connect();
 
         try {
@@ -14,48 +14,50 @@ export const dbInit = (function() {
             // Create names table if it doesn't exist
             await client.query(
                 `
-                CREATE TABLE IF NOT EXISTS names (
-                    name_id INTEGER PRIMARY KEY,
-                    name VARCHAR(255) UNIQUE
+                CREATE TABLE IF NOT EXISTS ${namesTable().namesTableName} (
+                    ${namesTable().nameIdColumn} INTEGER PRIMARY KEY,
+                    ${namesTable().nameColumn} VARCHAR(255) UNIQUE
                 );
                 `,
             );
-            console.log(`Created names table`);
+            console.log(`Created ${namesTable().namesTableName} table`);
 
             // Create experience table if it doesn't exist
             await client.query(
                 `
-                CREATE TABLE IF NOT EXISTS experience (
-                    experience_id INTEGER PRIMARY KEY,
-                    experience INTEGER UNIQUE
+                CREATE TABLE IF NOT EXISTS ${experienceTable().experienceTableName} (
+                    ${experienceTable().experienceIdColumn} INTEGER PRIMARY KEY,
+                    ${experienceTable().experienceColumn} INTEGER UNIQUE
                 );
                 `,
             );
-            console.log(`Created experience table`);
+            console.log(
+                `Created ${experienceTable().experienceTableName} table`,
+            );
 
             // Create salaries table if it doesn't exist
             await client.query(
                 `
-                CREATE TABLE IF NOT EXISTS salaries (
-                    salary_id INTEGER PRIMARY KEY,
-                    salary INTEGER UNIQUE
+                CREATE TABLE IF NOT EXISTS ${salariesTable().salariesTableName} (
+                    ${salariesTable().salaryIdColumn} INTEGER PRIMARY KEY,
+                    ${salariesTable().salaryColumn} INTEGER UNIQUE
                 );
                 `,
             );
-            console.log(`Created salaries table`);
+            console.log(`Created ${salariesTable().salariesTableName} table`);
 
             // Create people table if it doesn't exist
             await client.query(
                 `
-                CREATE TABLE IF NOT EXISTS people (
-                    person_id INTEGER PRIMARY KEY,
-                    name_id INTEGER REFERENCES names,
-                    experience_id INTEGER REFERENCES experience,
-                    salary_id INTEGER REFERENCES salaries
+                CREATE TABLE IF NOT EXISTS ${peopleTable().peopleTableName} (
+                    ${peopleTable().personIdColumn} INTEGER PRIMARY KEY,
+                    ${peopleTable().nameIdColumn} INTEGER REFERENCES names,
+                    ${peopleTable().experienceIdColumn} INTEGER REFERENCES experience,
+                    ${peopleTable().salaryIdColumn} INTEGER REFERENCES salaries
                 );
                 `,
             );
-            console.log(`Created people table`);
+            console.log(`Created ${peopleTable().peopleTableName} table`);
 
             await client.query("COMMIT;");
         } catch (ex) {
