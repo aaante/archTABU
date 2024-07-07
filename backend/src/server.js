@@ -7,7 +7,7 @@ import { putRoute } from "./routes/putRoute.js";
 import { deleteRoute } from "./routes/deleteRoute.js";
 import { dbInit } from "./db/dbInit.js";
 
-export const server = (function() {
+export const server = (function () {
     const app = express();
     const port = process.env.EXPRESS_PORT;
     const { init } = dbInit;
@@ -27,16 +27,14 @@ export const server = (function() {
     app.use("/", updateData);
     app.use("/", deleteData);
 
-    const startServer = async function() {
-        try {
-            await init();
+    // Start server
+    init()
+        .then(() => {
             app.listen(port, () => {
                 console.log(`App listening on: http://localhost:${port}`);
             });
-        } catch (error) {
+        })
+        .catch((error) => {
             console.error(error);
-        }
-    };
-
-    startServer();
+        });
 })();
